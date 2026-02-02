@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: 'Created with Next.js',
 };
 
+import { InsforgeProvider } from './providers';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -13,7 +15,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <InsforgeProvider>
+          {children}
+        </InsforgeProvider>
+      </body>
     </html>
   );
 }
