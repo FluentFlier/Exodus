@@ -159,7 +159,16 @@ export default function ProjectPage() {
                         </div>
 
                         {/* We use docId = project.id for the main proposal for simplicity in MVP */}
-                        <CollaborativeEditor ref={editorRef} projectId={project.id} docId={project.id} />
+                        <CollaborativeEditor
+                            ref={editorRef}
+                            projectId={project.id}
+                            docId={project.id}
+                            grantInfo={{
+                                title: project.grants?.title,
+                                funder: project.grants?.funder,
+                                description: project.grants?.description,
+                            }}
+                        />
 
                         <div className="mt-8 border-t border-gray-800 pt-8 text-gray-500 text-sm center">
                             <p>AI Suggestions enabled. Type "/" to insert blocks (pending).</p>

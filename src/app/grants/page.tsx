@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { createClient } from '@insforge/sdk';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const insforge = createClient({
     baseUrl: process.env.NEXT_PUBLIC_INSFORGE_BASE_URL!,
@@ -12,6 +13,7 @@ const insforge = createClient({
 export default function GrantsPage() {
     const router = useRouter();
     const [loading, setLoading] = useState(true);
+    const [scouting, setScouting] = useState(false);
     const [recommended, setRecommended] = useState<any[]>([]);
     const [allGrants, setAllGrants] = useState<any[]>([]);
 
@@ -65,21 +67,59 @@ export default function GrantsPage() {
         }
     };
 
+    const runGrantScout = async () => {
+        setScouting(true);
+        try {
+            const res = await fetch('/api/ai/scout', { method: 'POST' });
+            const data = await res.json();
+            if (data.success) {
+                alert(`Grant Scout: ${data.message}`);
+                fetchGrants(); // Refresh the list
+            } else {
+                alert(`Scout failed: ${data.error}`);
+            }
+        } catch (error) {
+            alert('Failed to run Grant Scout');
+        } finally {
+            setScouting(false);
+        }
+    };
+
     if (loading) return <div className="p-8 text-white">Loading opportunities...</div>;
 
     return (
         <div className="min-h-screen bg-gray-950 text-white p-8">
+            {/* Navigation */}
+            <nav className="mb-8 flex items-center justify-between">
+                <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                    Exodus
+                </Link>
+                <div className="flex gap-4">
+                    <Link href="/grants" className="text-indigo-400">Grants</Link>
+                    <Link href="/login" className="text-gray-400 hover:text-white">Account</Link>
+                </div>
+            </nav>
+
             <header className="mb-10 flex justify-between items-center">
                 <div>
                     <h1 className="text-3xl font-bold">Funding Opportunities</h1>
                     <p className="text-gray-400">Curated grants matched to your expertise.</p>
                 </div>
-                <button
-                    onClick={() => router.push('/api/seed')} // Temporary Helper
-                    className="text-xs text-gray-600 hover:text-gray-400"
-                >
-                    (Dev: Seed Grants)
-                </button>
+                <div className="flex gap-3">
+                    <button
+                        onClick={runGrantScout}
+                        disabled={scouting}
+                        className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-500 disabled:opacity-50 text-sm font-medium"
+                    >
+                        {scouting ? '🔍 Scouting...' : '🔍 Run Grant Scout'}
+                    </button>
+                    <button
+                        onClick={() => fetch('/api/seed').then(() => fetchGrants())}
+                        className="px-4 py-2 bg-gray-800 text-gray-300 rounded hover:bg-gray-700 text-sm"
+                    >
+                        Seed Sample Data
+                    </button>
+                </div>
             </header>
 
             {/* Recommended Section */}
