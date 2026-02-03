@@ -1,5 +1,5 @@
 import * as Y from 'yjs';
-import { RealtimeClient } from '@insforge/sdk'; // Or generic type, actually client instance
+import { InsForgeClient } from '@insforge/sdk';
 import { Observable } from 'lib0/observable';
 
 export class InsForgeProvider extends Observable<string> {

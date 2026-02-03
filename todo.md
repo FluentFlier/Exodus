@@ -67,9 +67,10 @@
 ## Handoff: Immediate Next Steps
 - [ ] **GitHub**: Create a new repository on GitHub and push this code:
   ```bash
-  git remote add origin <your-repo-url>
+  git remote add origin <https://github.com/FluentFlier/pia.git>
   git branch -M main
   git push -u origin main
   ```
 - [ ] **CodeRabbit**: Install CodeRabbit app on the new GitHub repository (Marketplace).
   - *Note*: `coderabbit.yaml` has been created with default settings.
+

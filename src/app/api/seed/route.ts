@@ -76,6 +76,11 @@ export async function GET() {
                 input: textToEmbed,
             });
 
+            if (!embeddingResponse.data) {
+                console.error(`Failed to generate embedding for: ${grant.title}`);
+                continue;
+            }
+
             const embedding = embeddingResponse.data[0].embedding;
 
             // Insert Grant

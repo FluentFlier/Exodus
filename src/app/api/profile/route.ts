@@ -25,6 +25,10 @@ export async function POST(request: Request) {
             input: textToEmbed,
         });
 
+        if (!embeddingResponse.data) {
+            return NextResponse.json({ error: 'Failed to generate embedding' }, { status: 500 });
+        }
+
         const embedding = embeddingResponse.data[0].embedding;
 
         // 2. Update Profile

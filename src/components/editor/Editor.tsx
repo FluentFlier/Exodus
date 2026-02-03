@@ -42,7 +42,8 @@ const CollaborativeEditor = forwardRef<EditorRef, CollaborativeEditorProps>(
         const editor = useEditor({
             extensions: [
                 StarterKit.configure({
-                    history: false, // Y.js handles history
+                    // @ts-expect-error - Y.js handles history, disable built-in
+                    history: false,
                 }),
                 Collaboration.configure({
                     document: ydoc,

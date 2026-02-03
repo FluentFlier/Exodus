@@ -40,7 +40,7 @@ export async function POST(
 
         // Generate signed URLs for artifacts
         const artifactsWithUrls = await Promise.all(
-            (artifacts || []).map(async (artifact) => {
+            (artifacts || []).map(async (artifact: any) => {
                 if (!artifact.storage_path) return { ...artifact, downloadUrl: null };
 
                 const { data } = await insforge.storage
@@ -75,7 +75,7 @@ export async function POST(
                     format: 'html',
                 },
             ],
-            artifacts: (artifacts || []).map((a) => ({
+            artifacts: (artifacts || []).map((a: any) => ({
                 name: a.name,
                 type: a.file_type,
                 required: a.is_required,
