@@ -8,6 +8,7 @@ import CollaborativeEditor, { EditorRef } from '@/components/editor/Editor';
 import TeamList from '@/components/project/TeamList';
 import TaskList from '@/components/project/TaskList';
 import ArtifactsList from '@/components/project/ArtifactsList';
+import AIActions from '@/components/project/AIActions';
 
 const insforge = createClient<Database>({
     baseUrl: process.env.NEXT_PUBLIC_INSFORGE_BASE_URL!,
@@ -167,9 +168,17 @@ export default function ProjectPage() {
                 </main>
 
                 {/* Right Sidebar - Agent Actions & Meta */}
-                <aside className="w-72 bg-gray-900 border-l border-gray-800 p-4 flex flex-col gap-6 overflow-auto">
+                <aside className="w-80 bg-gray-900 border-l border-gray-800 p-4 flex flex-col gap-6 overflow-auto">
+                    <AIActions
+                        projectId={project.id}
+                        getDocumentContent={() => editorRef.current?.getHTML() || ''}
+                        grantInfo={{
+                            title: project.grants?.title,
+                            funder: project.grants?.funder,
+                            eligibility_text: project.grants?.eligibility_text,
+                        }}
+                    />
                     <TeamList projectId={project.id} />
-                    <TaskList projectId={project.id} />
                     <ArtifactsList projectId={project.id} />
                 </aside>
             </div>

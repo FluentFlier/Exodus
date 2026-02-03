@@ -95,7 +95,15 @@ declare module '@insforge/sdk' {
                     model: string;
                     messages: Array<{ role: string; content: string }>;
                     stream?: boolean;
-                }) => Promise<{ data: any; error: any }>;
+                }) => Promise<{
+                    data: {
+                        choices: Array<{
+                            message: { role: string; content: string };
+                            finish_reason: string;
+                        }>;
+                    } | null;
+                    error: any;
+                }>;
             };
         };
     }
