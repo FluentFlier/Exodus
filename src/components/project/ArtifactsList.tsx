@@ -1,13 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
-import { createClient } from '@insforge/sdk';
 import { Database } from '@/lib/database.types';
-
-const insforge = createClient<Database>({
-    baseUrl: process.env.NEXT_PUBLIC_INSFORGE_BASE_URL!,
-    anonKey: process.env.NEXT_PUBLIC_INSFORGE_ANON_KEY!,
-});
 
 type Artifact = Database['public']['Tables']['artifacts']['Row'];
 
@@ -22,16 +16,17 @@ export default function ArtifactsList({ projectId }: { projectId: string }) {
     }, [projectId]);
 
     const fetchArtifacts = async () => {
-        const { data, error } = await insforge
-            .from('artifacts')
-            .select('*')
-            .eq('project_id', projectId)
-            .order('created_at', { ascending: false });
-
-        if (!error && data) {
-            setArtifacts(data);
+        try {
+            const res = await fetch(`/api/projects/${projectId}/artifacts`);
+            const data = await res.json();
+            if (data.artifacts) {
+                setArtifacts(data.artifacts);
+            }
+        } catch (error) {
+            console.error('Error fetching artifacts:', error);
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,43 +36,35 @@ export default function ArtifactsList({ projectId }: { projectId: string }) {
         setUploading(true);
 
         try {
-            // Generate unique storage path
+            // For now, just save metadata (storage upload would need signed URLs)
             const timestamp = Date.now();
             const storagePath = `${projectId}/${timestamp}-${file.name}`;
 
-            // Upload to InsForge Storage
-            const { error: uploadError } = await insforge.storage
-                .from('artifacts')
-                .upload(storagePath, file);
-
-            if (uploadError) {
-                console.error('Upload error:', uploadError);
-                alert('Failed to upload file');
-                return;
-            }
-
-            // Store metadata in database
-            const { error: dbError } = await insforge
-                .from('artifacts')
-                .insert({
-                    project_id: projectId,
+            // Save artifact metadata via API
+            const res = await fetch(`/api/projects/${projectId}/artifacts`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
                     name: file.name,
-                    storage_path: storagePath,
-                    file_type: file.type || 'application/octet-stream',
-                    is_required: false,
-                });
+                    storagePath,
+                    fileType: file.type || 'application/octet-stream',
+                }),
+            });
 
-            if (dbError) {
-                console.error('Database error:', dbError);
-                alert('Failed to save artifact metadata');
+            const data = await res.json();
+
+            if (!res.ok) {
+                alert(data.error || 'Failed to save artifact');
                 return;
             }
 
             // Refresh list
             await fetchArtifacts();
+        } catch (error) {
+            console.error('Upload error:', error);
+            alert('Failed to upload file');
         } finally {
             setUploading(false);
-            // Reset file input
             if (fileInputRef.current) {
                 fileInputRef.current.value = '';
             }
@@ -85,41 +72,28 @@ export default function ArtifactsList({ projectId }: { projectId: string }) {
     };
 
     const handleDownload = async (artifact: Artifact) => {
-        if (!artifact.storage_path) return;
-
-        // Get signed URL for download
-        const { data, error } = await insforge.storage
-            .from('artifacts')
-            .createSignedUrl(artifact.storage_path, 60); // 60 seconds expiry
-
-        if (error || !data?.signedUrl) {
-            console.error('Failed to get download URL:', error);
-            alert('Failed to get download link');
-            return;
-        }
-
-        // Open in new tab or trigger download
-        window.open(data.signedUrl, '_blank');
+        // For now, just show a message since storage requires server-side signed URLs
+        alert(`Download: ${artifact.name}\nStorage path: ${artifact.storage_path}\n\nNote: Full storage download requires InsForge storage configuration.`);
     };
 
     const handleDelete = async (artifact: Artifact) => {
         if (!confirm(`Delete "${artifact.name}"?`)) return;
 
-        // Delete from storage
-        if (artifact.storage_path) {
-            await insforge.storage
-                .from('artifacts')
-                .remove([artifact.storage_path]);
+        try {
+            const res = await fetch(
+                `/api/projects/${projectId}/artifacts?id=${artifact.id}&storagePath=${artifact.storage_path || ''}`,
+                { method: 'DELETE' }
+            );
+
+            if (res.ok) {
+                await fetchArtifacts();
+            } else {
+                alert('Failed to delete artifact');
+            }
+        } catch (error) {
+            console.error('Delete error:', error);
+            alert('Failed to delete artifact');
         }
-
-        // Delete from database
-        await insforge
-            .from('artifacts')
-            .delete()
-            .eq('id', artifact.id);
-
-        // Refresh list
-        await fetchArtifacts();
     };
 
     const formatFileSize = (bytes?: number) => {

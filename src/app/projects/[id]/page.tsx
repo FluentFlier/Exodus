@@ -2,18 +2,10 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'next/navigation';
-import { createClient } from '@insforge/sdk';
-import { Database } from '@/lib/database.types';
 import CollaborativeEditor, { EditorRef } from '@/components/editor/Editor';
 import TeamList from '@/components/project/TeamList';
-import TaskList from '@/components/project/TaskList';
 import ArtifactsList from '@/components/project/ArtifactsList';
 import AIActions from '@/components/project/AIActions';
-
-const insforge = createClient<Database>({
-    baseUrl: process.env.NEXT_PUBLIC_INSFORGE_BASE_URL!,
-    anonKey: process.env.NEXT_PUBLIC_INSFORGE_ANON_KEY!,
-});
 
 export default function ProjectPage() {
     const { id } = useParams();
@@ -27,14 +19,17 @@ export default function ProjectPage() {
     }, [id]);
 
     const fetchProject = async (projectId: string) => {
-        const { data } = await insforge
-            .from('projects')
-            .select('*, grants(*)') // Join with grants
-            .eq('id', projectId)
-            .single();
-
-        setProject(data);
-        setLoading(false);
+        try {
+            const res = await fetch(`/api/projects/${projectId}`);
+            const data = await res.json();
+            if (data.project) {
+                setProject(data.project);
+            }
+        } catch (error) {
+            console.error('Error fetching project:', error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleExport = async () => {

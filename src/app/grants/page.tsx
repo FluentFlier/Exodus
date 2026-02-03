@@ -1,14 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { createClient } from '@insforge/sdk';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-
-const insforge = createClient({
-    baseUrl: process.env.NEXT_PUBLIC_INSFORGE_BASE_URL!,
-    anonKey: process.env.NEXT_PUBLIC_INSFORGE_ANON_KEY!,
-});
 
 export default function GrantsPage() {
     const router = useRouter();
@@ -30,14 +24,12 @@ export default function GrantsPage() {
                 setRecommended(grants || []);
             }
 
-            // 2. Fetch All Grants (Fallback/Browse)
-            const { data } = await insforge
-                .from('grants')
-                .select('*')
-                .order('deadline', { ascending: true })
-                .limit(20);
-
-            setAllGrants(data || []);
+            // 2. Fetch All Grants via API route
+            const grantsRes = await fetch('/api/grants');
+            if (grantsRes.ok) {
+                const { grants } = await grantsRes.json();
+                setAllGrants(grants || []);
+            }
         } catch (e) {
             console.error(e);
         } finally {
@@ -46,24 +38,23 @@ export default function GrantsPage() {
     };
 
     const startProject = async (grantId: string) => {
-        // Navigate to project creation or create immediately
-        // For now, let's just create and redirect
-        const { data: { user } } = await insforge.auth.getUser();
-        if (!user) return;
+        try {
+            const res = await fetch('/api/projects', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ grantId, title: 'New Application' }),
+            });
 
-        const { data: project, error } = await insforge
-            .from('projects')
-            .insert({
-                grant_id: grantId,
-                owner_id: user.id,
-                status: 'draft',
-                title: 'New Application', // Should ask user ideally
-            })
-            .select()
-            .single();
+            const data = await res.json();
 
-        if (project) {
-            router.push(`/projects/${project.id}`);
+            if (data.project) {
+                router.push(`/projects/${data.project.id}`);
+            } else {
+                alert(data.error || 'Failed to create project');
+            }
+        } catch (error) {
+            console.error('Error creating project:', error);
+            alert('Failed to create project');
         }
     };
 
