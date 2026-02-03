@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+'use client';
+
+import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import { createClient } from '@insforge/sdk';
 import { Database } from '@/lib/database.types';
-import CollaborativeEditor from '@/components/editor/Editor';
+import CollaborativeEditor, { EditorRef } from '@/components/editor/Editor';
 import TeamList from '@/components/project/TeamList';
 import TaskList from '@/components/project/TaskList';
 import ArtifactsList from '@/components/project/ArtifactsList';
@@ -16,6 +18,8 @@ export default function ProjectPage() {
     const { id } = useParams();
     const [project, setProject] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [exporting, setExporting] = useState(false);
+    const editorRef = useRef<EditorRef>(null);
 
     useEffect(() => {
         if (id) fetchProject(id as string);
@@ -32,6 +36,69 @@ export default function ProjectPage() {
         setLoading(false);
     };
 
+    const handleExport = async () => {
+        if (!editorRef.current || !project) return;
+
+        setExporting(true);
+        try {
+            const documentHtml = editorRef.current.getHTML();
+
+            const res = await fetch(`/api/projects/${project.id}/export`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    documentHtml,
+                    documentTitle: 'Research Proposal',
+                }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                alert(data.error || 'Export failed');
+                return;
+            }
+
+            // Download the HTML document
+            const blob = new Blob([data.package.html], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${project.title || 'submission'}-proposal.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            // Download manifest
+            const manifestBlob = new Blob(
+                [JSON.stringify(data.package.manifest, null, 2)],
+                { type: 'application/json' }
+            );
+            const manifestUrl = URL.createObjectURL(manifestBlob);
+            const manifestLink = document.createElement('a');
+            manifestLink.href = manifestUrl;
+            manifestLink.download = `${project.title || 'submission'}-manifest.json`;
+            document.body.appendChild(manifestLink);
+            manifestLink.click();
+            document.body.removeChild(manifestLink);
+            URL.revokeObjectURL(manifestUrl);
+
+            // Notify about artifacts
+            if (data.package.artifacts?.length > 0) {
+                alert(
+                    `Document and manifest downloaded!\n\n` +
+                    `You have ${data.package.artifacts.length} artifact(s) to download separately from the Artifacts panel.`
+                );
+            }
+        } catch (error) {
+            console.error('Export error:', error);
+            alert('Failed to export submission');
+        } finally {
+            setExporting(false);
+        }
+    };
+
     if (loading) return <div className="text-white p-8">Loading workspace...</div>;
     if (!project) return <div className="text-white p-8">Project not found</div>;
 
@@ -43,16 +110,23 @@ export default function ProjectPage() {
                     <div className="text-xs text-indigo-400 uppercase font-bold tracking-wider mb-1">
                         Project Workspace
                     </div>
+                    <h1 className="text-xl font-bold">{project.title || 'Untitled Project'}</h1>
+                    <p className="text-xs text-gray-500 mt-1">
+                        Grant: {project.grants?.title} ({project.grants?.funder})
+                    </p>
                 </div>
-                <h1 className="text-xl font-bold">{project.title || 'Untitled Project'}</h1>
-                <p className="text-xs text-gray-500 mt-1">
-                    Grant: {project.grants?.title} ({project.grants?.funder})
-                </p>
-                <div className="flex gap-3">
+                <div className="flex gap-3 items-center">
                     <div className="flex -space-x-2">
                         {/* Team Avatars Placeholder */}
                         <div className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-xs border-2 border-gray-900">ME</div>
                     </div>
+                    <button
+                        onClick={handleExport}
+                        disabled={exporting}
+                        className="bg-green-600 px-4 py-2 rounded text-sm font-semibold hover:bg-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        {exporting ? 'Exporting...' : '📦 Export Submission'}
+                    </button>
                     <button className="bg-indigo-600 px-4 py-2 rounded text-sm font-semibold hover:bg-indigo-500">
                         Share
                     </button>
@@ -84,7 +158,7 @@ export default function ProjectPage() {
                         </div>
 
                         {/* We use docId = project.id for the main proposal for simplicity in MVP */}
-                        <CollaborativeEditor projectId={project.id} docId={project.id} />
+                        <CollaborativeEditor ref={editorRef} projectId={project.id} docId={project.id} />
 
                         <div className="mt-8 border-t border-gray-800 pt-8 text-gray-500 text-sm center">
                             <p>AI Suggestions enabled. Type "/" to insert blocks (pending).</p>
