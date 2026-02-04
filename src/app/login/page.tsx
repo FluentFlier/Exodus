@@ -71,13 +71,21 @@ export default function LoginPage() {
           throw new Error(signInResult.error);
         }
 
-        router.push('/onboarding');
+        // Give auth state a moment to update, then redirect
+        setTimeout(() => {
+          window.location.href = '/onboarding';
+        }, 100);
       } else {
         const result = await signIn(email, password);
         if ('error' in result && result.error) {
           throw new Error(result.error || 'Sign in failed');
         }
-        router.push(redirectTo);
+
+        // Give auth state a moment to update, then redirect
+        setTimeout(() => {
+          // Use window.location for more reliable redirect
+          window.location.href = redirectTo;
+        }, 100);
       }
     } catch (err: any) {
       setError(err.message || 'An error occurred');
