@@ -356,7 +356,7 @@ export const LandingPage: FunctionComponent = () => {
                                         feature.color === 'amber' ? 'bg-amber-50' :
                                             'bg-sage-50'
                                     }`}>
-                                    <div className={`w-2 h-2 rounded-full ${feature.color === 'teal' ? 'bg-teal' :
+                                    <div className={`w-3 h-3 rounded-full ${feature.color === 'teal' ? 'bg-teal' :
                                         feature.color === 'violet' ? 'bg-violet' :
                                             feature.color === 'amber' ? 'bg-amber' :
                                                 'bg-sage'
@@ -394,7 +394,7 @@ export const LandingPage: FunctionComponent = () => {
                             { step: '06', title: 'Export & Submit', desc: 'Package documents ready for submission portal.' },
                         ].map((item, i) => (
                             <div key={i} className="relative">
-                                <div className="text-5xl lg:text-6xl font-serif text-teal-100 mb-3">{item.step}</div>
+                                <div className="text-5xl lg:text-6xl font-serif text-teal-300 font-bold mb-3">{item.step}</div>
                                 <h3 className="font-serif text-base lg:text-lg mb-2">{item.title}</h3>
                                 <p className="text-xs lg:text-sm text-inkMuted leading-relaxed">{item.desc}</p>
                                 {i < 5 && (
