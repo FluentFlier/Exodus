@@ -59,7 +59,7 @@ export const LandingPage: FunctionComponent = () => {
         {
             icon: <UsersIcon />,
             title: 'Real-Time Collaboration',
-            description: 'Y.js-powered collaborative editing with live cursors, comments, and conflict-free synchronization. Work together seamlessly.',
+            description: 'Write together like Google Docs—see your team\'s edits instantly, leave comments, and never worry about version conflicts. Perfect for multi-PI proposals.',
             color: 'violet',
         },
         {
@@ -314,9 +314,9 @@ export const LandingPage: FunctionComponent = () => {
                                 className="card-hover p-8 group"
                             >
                                 <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl mb-5 ${feature.color === 'teal' ? 'bg-teal-50 text-teal' :
-                                        feature.color === 'violet' ? 'bg-violet-50 text-violet' :
-                                            feature.color === 'amber' ? 'bg-amber-50 text-amber' :
-                                                'bg-sage-50 text-sage'
+                                    feature.color === 'violet' ? 'bg-violet-50 text-violet' :
+                                        feature.color === 'amber' ? 'bg-amber-50 text-amber' :
+                                            'bg-sage-50 text-sage'
                                     }`}>
                                     {feature.icon}
                                 </div>
@@ -352,14 +352,14 @@ export const LandingPage: FunctionComponent = () => {
                                 className="rounded-xl bg-paper border border-border p-6 hover:border-teal/30 transition-colors"
                             >
                                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-4 ${feature.color === 'teal' ? 'bg-teal-50' :
-                                        feature.color === 'violet' ? 'bg-violet-50' :
-                                            feature.color === 'amber' ? 'bg-amber-50' :
-                                                'bg-sage-50'
+                                    feature.color === 'violet' ? 'bg-violet-50' :
+                                        feature.color === 'amber' ? 'bg-amber-50' :
+                                            'bg-sage-50'
                                     }`}>
                                     <div className={`w-2 h-2 rounded-full ${feature.color === 'teal' ? 'bg-teal' :
-                                            feature.color === 'violet' ? 'bg-violet' :
-                                                feature.color === 'amber' ? 'bg-amber' :
-                                                    'bg-sage'
+                                        feature.color === 'violet' ? 'bg-violet' :
+                                            feature.color === 'amber' ? 'bg-amber' :
+                                                'bg-sage'
                                         }`} />
                                 </div>
                                 <h3 className="font-serif text-lg mb-2">
