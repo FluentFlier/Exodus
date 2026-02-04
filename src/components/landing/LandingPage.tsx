@@ -162,7 +162,7 @@ export const LandingPage: FunctionComponent = () => {
 
                             <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight text-ink leading-[1.1]">
                                 Write winning grants with{' '}
-                                <span className="text-gradient">grant intelligence</span>{' '}
+                                <span className="font-bold text-teal">grant intelligence</span>{' '}
                                 and real-time collaboration
                             </h1>
 
@@ -189,9 +189,9 @@ export const LandingPage: FunctionComponent = () => {
                             <div className="mt-10 flex items-center gap-6">
                                 <div className="flex -space-x-2">
                                     {[1, 2, 3, 4].map((i) => (
-                                        <div key={i} className="avatar avatar-sm border-2 border-surface" style={{ backgroundColor: ['#D1EBEB', '#FDE68A', '#E1EBE1', '#F3F1FA'][i-1] }}>
-                                            <span className="text-2xs" style={{ color: ['#0D7377', '#D97706', '#6B8E6B', '#8B7EC8'][i-1] }}>
-                                                {['JD', 'SM', 'AK', 'RW'][i-1]}
+                                        <div key={i} className="avatar avatar-sm border-2 border-surface" style={{ backgroundColor: ['#D1EBEB', '#FDE68A', '#E1EBE1', '#F3F1FA'][i - 1] }}>
+                                            <span className="text-2xs" style={{ color: ['#0D7377', '#D97706', '#6B8E6B', '#8B7EC8'][i - 1] }}>
+                                                {['JD', 'SM', 'AK', 'RW'][i - 1]}
                                             </span>
                                         </div>
                                     ))}
@@ -313,12 +313,11 @@ export const LandingPage: FunctionComponent = () => {
                                 key={i}
                                 className="card-hover p-8 group"
                             >
-                                <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl mb-5 ${
-                                    feature.color === 'teal' ? 'bg-teal-50 text-teal' :
-                                    feature.color === 'violet' ? 'bg-violet-50 text-violet' :
-                                    feature.color === 'amber' ? 'bg-amber-50 text-amber' :
-                                    'bg-sage-50 text-sage'
-                                }`}>
+                                <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl mb-5 ${feature.color === 'teal' ? 'bg-teal-50 text-teal' :
+                                        feature.color === 'violet' ? 'bg-violet-50 text-violet' :
+                                            feature.color === 'amber' ? 'bg-amber-50 text-amber' :
+                                                'bg-sage-50 text-sage'
+                                    }`}>
                                     {feature.icon}
                                 </div>
                                 <h3 className="font-serif text-xl mb-3 group-hover:text-teal transition-colors">
@@ -352,18 +351,16 @@ export const LandingPage: FunctionComponent = () => {
                                 key={i}
                                 className="rounded-xl bg-paper border border-border p-6 hover:border-teal/30 transition-colors"
                             >
-                                <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-4 ${
-                                    feature.color === 'teal' ? 'bg-teal-50' :
-                                    feature.color === 'violet' ? 'bg-violet-50' :
-                                    feature.color === 'amber' ? 'bg-amber-50' :
-                                    'bg-sage-50'
-                                }`}>
-                                    <div className={`w-2 h-2 rounded-full ${
-                                        feature.color === 'teal' ? 'bg-teal' :
-                                        feature.color === 'violet' ? 'bg-violet' :
-                                        feature.color === 'amber' ? 'bg-amber' :
-                                        'bg-sage'
-                                    }`} />
+                                <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-4 ${feature.color === 'teal' ? 'bg-teal-50' :
+                                        feature.color === 'violet' ? 'bg-violet-50' :
+                                            feature.color === 'amber' ? 'bg-amber-50' :
+                                                'bg-sage-50'
+                                    }`}>
+                                    <div className={`w-2 h-2 rounded-full ${feature.color === 'teal' ? 'bg-teal' :
+                                            feature.color === 'violet' ? 'bg-violet' :
+                                                feature.color === 'amber' ? 'bg-amber' :
+                                                    'bg-sage'
+                                        }`} />
                                 </div>
                                 <h3 className="font-serif text-lg mb-2">
                                     {feature.title}
