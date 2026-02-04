@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@insforge/sdk';
 import { auth } from '@insforge/nextjs/server';
+import { INSFORGE_LLM_MODEL } from '@/lib/ai-config';
+import { getCompletionContent } from '@/lib/ai-helpers';
+import { checkRateLimit } from '@/lib/rate-limit';
 
 // POST - AI Co-Pilot for writing assistance
 export async function POST(request: Request) {
@@ -8,6 +11,12 @@ export async function POST(request: Request) {
         const { token } = await auth();
         if (!token) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
+        const clientKey = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'local';
+        const rate = checkRateLimit(`copilot:${clientKey}`, 20, 60 * 1000);
+        if (!rate.allowed) {
+            return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 });
         }
 
         const { prompt, context, grantInfo, action } = await request.json();
@@ -73,14 +82,14 @@ Guidelines:
         }
 
         const response = await insforge.ai.chat.completions.create({
-            model: 'gpt-4o',
+            model: INSFORGE_LLM_MODEL,
             messages: [
                 { role: 'system', content: systemPrompt },
                 { role: 'user', content: userPrompt },
             ],
         });
 
-        const generatedText = response.data?.choices?.[0]?.message?.content || '';
+        const generatedText = getCompletionContent(response);
 
         return NextResponse.json({
             success: true,

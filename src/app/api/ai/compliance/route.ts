@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@insforge/sdk';
 import { auth } from '@insforge/nextjs/server';
+import { INSFORGE_LLM_MODEL } from '@/lib/ai-config';
+import { getCompletionContent, parseJsonSafe } from '@/lib/ai-helpers';
+import { checkRateLimit } from '@/lib/rate-limit';
 
 // POST - Check proposal compliance against grant eligibility
 export async function POST(request: Request) {
@@ -8,6 +11,12 @@ export async function POST(request: Request) {
         const { token } = await auth();
         if (!token) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
+        const clientKey = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'local';
+        const rate = checkRateLimit(`compliance:${clientKey}`, 10, 60 * 1000);
+        if (!rate.allowed) {
+            return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 });
         }
 
         const { proposalText, eligibilityText, grantTitle } = await request.json();
@@ -57,29 +66,21 @@ ${proposalText}
 Analyze this proposal against the eligibility requirements and provide your compliance assessment.`;
 
         const response = await insforge.ai.chat.completions.create({
-            model: 'gpt-4o',
+            model: INSFORGE_LLM_MODEL,
             messages: [
                 { role: 'system', content: systemPrompt },
                 { role: 'user', content: userPrompt },
             ],
         });
 
-        // Parse the response
-        let analysis;
-        try {
-            const content = response.data?.choices?.[0]?.message?.content || '';
-            // Extract JSON from response (handle markdown code blocks)
-            const jsonMatch = content.match(/```json\n?([\s\S]*?)\n?```/) || [null, content];
-            analysis = JSON.parse(jsonMatch[1] || content);
-        } catch {
-            analysis = {
-                compliant: false,
-                score: 0,
-                issues: [],
-                summary: response.data?.choices?.[0]?.message?.content || 'Analysis failed',
-                raw: true,
-            };
-        }
+        const content = getCompletionContent(response);
+        const analysis = parseJsonSafe(content, {
+            compliant: false,
+            score: 0,
+            issues: [],
+            summary: content || 'Analysis failed',
+            raw: true,
+        });
 
         return NextResponse.json({
             success: true,

@@ -1,151 +1,359 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@insforge/sdk';
+import { XMLParser } from 'fast-xml-parser';
+import { auth } from '@insforge/nextjs/server';
+import { INSFORGE_EMBEDDING_MODEL } from '@/lib/ai-config';
+import { loadGrantSources } from '@/lib/grant-sources';
+import { checkRateLimit } from '@/lib/rate-limit';
+import { CURATED_GRANTS } from '@/data/mock-grant-data';
 
-// Grant Scout Agent - Discovers and ingests new grants
-// Can be triggered manually or via external cron service
+const parser = new XMLParser({ ignoreAttributes: false });
 
-const SAMPLE_GRANT_SOURCES = [
-    {
-        title: 'NIH R01 Research Project Grant',
-        description: 'The R01 is the original and historically oldest grant mechanism used by NIH. The R01 provides support for health-related research and development based on the mission of the NIH.',
-        funder: 'National Institutes of Health',
-        deadline: '2025-06-01',
-        amount_min: 250000,
-        amount_max: 500000,
-        eligibility_text: 'Principal Investigators must have a doctoral degree or equivalent. Must be affiliated with an accredited research institution. Project must align with NIH mission areas.',
-        tags: ['biomedical', 'health', 'research', 'clinical'],
-        source_url: 'https://grants.nih.gov/grants/guide/pa-files/PA-20-185.html',
-    },
-    {
-        title: 'NSF CAREER Award',
-        description: 'The Faculty Early Career Development (CAREER) Program offers the National Science Foundation most prestigious awards in support of early-career faculty who have the potential to serve as academic role models in research and education.',
-        funder: 'National Science Foundation',
-        deadline: '2025-07-15',
-        amount_min: 400000,
-        amount_max: 800000,
-        eligibility_text: 'Untenured faculty member at a US institution. Must hold a doctoral degree. Must be engaged in research in an NSF-supported discipline.',
-        tags: ['science', 'engineering', 'education', 'early-career'],
-        source_url: 'https://www.nsf.gov/funding/pgm_summ.jsp?pims_id=503214',
-    },
-    {
-        title: 'DOE Early Career Research Program',
-        description: 'Support for exceptional researchers during their early career years when they are establishing their independent research programs.',
-        funder: 'Department of Energy',
-        deadline: '2025-05-01',
-        amount_min: 150000,
-        amount_max: 750000,
-        eligibility_text: 'Untenured faculty or DOE national laboratory employee within 10 years of PhD. Research must fall within DOE Office of Science mission.',
-        tags: ['energy', 'physics', 'chemistry', 'materials science'],
-        source_url: 'https://science.osti.gov/early-career',
-    },
-    {
-        title: 'Gates Foundation Global Health Grant',
-        description: 'Supporting innovative approaches to reduce health inequities and solve critical global health challenges in infectious diseases, maternal and child health.',
-        funder: 'Bill & Melinda Gates Foundation',
-        deadline: '2025-08-31',
-        amount_min: 100000,
-        amount_max: 2000000,
-        eligibility_text: 'Open to researchers at accredited institutions worldwide. Must address global health challenges affecting low and middle-income countries.',
-        tags: ['global health', 'infectious disease', 'equity', 'international'],
-        source_url: 'https://www.gatesfoundation.org/about/how-we-work/grants',
-    },
-    {
-        title: 'Sloan Research Fellowship',
-        description: 'Awarded to early-career scholars in recognition of distinguished performance and a unique potential to make substantial contributions to their field.',
-        funder: 'Alfred P. Sloan Foundation',
-        deadline: '2025-09-15',
-        amount_min: 75000,
-        amount_max: 75000,
-        eligibility_text: 'Must hold a tenure-track position at a US or Canadian institution. Must be within 6 years of receiving PhD.',
-        tags: ['chemistry', 'computer science', 'mathematics', 'physics', 'neuroscience'],
-        source_url: 'https://sloan.org/fellowships',
-    },
-];
+type GrantSource = {
+  slug: string;
+  name: string;
+  url: string;
+  type: 'rss' | 'api' | 'manual';
+  category?: string;
+  funder?: string;
+  api?: string;
+};
 
-// POST - Run grant scout to discover and ingest new grants
-export async function POST(request: Request) {
-    try {
-        // For production, this would use authentication
-        // For now, we'll use the anon key for the scout
-        const insforge = createClient({
-            baseUrl: process.env.NEXT_PUBLIC_INSFORGE_BASE_URL!,
-            anonKey: process.env.NEXT_PUBLIC_INSFORGE_ANON_KEY!,
-        });
+const NSF_API = 'https://api.nsf.gov/services/v1/awards.json';
 
-        const results = {
-            processed: 0,
-            added: 0,
-            updated: 0,
-            errors: [] as string[],
-        };
+const SAMPLE_GRANTS = CURATED_GRANTS;
 
-        for (const grant of SAMPLE_GRANT_SOURCES) {
-            try {
-                results.processed++;
+type RawGrant = {
+  title: string;
+  description: string | null;
+  funder: string | null;
+  deadline?: string | null;
+  amount_min?: number | null;
+  amount_max?: number | null;
+  eligibility_text?: string | null;
+  eligibility_json?: Record<string, unknown> | null;
+  tags?: string[] | null;
+  categories?: string[] | null;
+  source_url?: string | null;
+  source_name: string;
+  source_identifier: string;
+};
 
-                // Generate embedding for the grant
-                const textToEmbed = `${grant.title} ${grant.description} ${grant.funder} ${grant.tags.join(' ')}`;
+const stripHtml = (value?: string) =>
+  value ? value.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim() : '';
 
-                const embeddingResponse = await insforge.ai.embeddings.create({
-                    model: 'text-embedding-3-small',
-                    input: textToEmbed,
-                });
+const parseRssItems = (xml: string, source: GrantSource): RawGrant[] => {
+  const parsed = parser.parse(xml);
+  const items = parsed?.rss?.channel?.item || [];
+  const normalized = Array.isArray(items) ? items : [items];
+  return normalized.map((item: any) => {
+    const title = item.title?.trim() || 'Untitled Grant';
+    const description = stripHtml(item.description || item['content:encoded'] || '');
+    const link = item.link || item.guid || source.url;
+    return {
+      title,
+      description,
+      funder: source.funder || source.name,
+      deadline: null,
+      amount_min: null,
+      amount_max: null,
+      eligibility_text: null,
+      tags: [],
+      source_url: link,
+      source_name: source.name,
+      source_identifier: String(item.guid?.['#text'] || item.guid || link || title),
+    };
+  });
+};
 
-                if (!embeddingResponse.data) {
-                    results.errors.push(`Failed to generate embedding for: ${grant.title}`);
-                    continue;
-                }
+const fetchRssSource = async (source: GrantSource, limit: number) => {
+  const response = await fetch(source.url);
+  if (!response.ok) {
+    throw new Error(`RSS fetch failed for ${source.name}`);
+  }
+  const xml = await response.text();
+  return parseRssItems(xml, source).slice(0, limit);
+};
 
-                const embedding = embeddingResponse.data[0].embedding;
+const fetchNsfAwards = async (limit: number, source: GrantSource): Promise<RawGrant[]> => {
+  const url = `${NSF_API}?offset=1&limit=${limit}&printFields=id,title,abstractText,awardAmount,startDate,endDate,piFirstName,piLastName,awardeeName`;
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error('NSF API fetch failed');
+  }
+  const json = await response.json();
+  const awards = json?.response?.award || [];
+  const normalized = Array.isArray(awards) ? awards : [awards];
+  return normalized.map((award: any) => ({
+    title: award.title || 'NSF Award',
+    description: award.abstractText || null,
+    funder: source.funder || 'National Science Foundation',
+    deadline: award.endDate || null,
+    amount_min: award.awardAmount || null,
+    amount_max: award.awardAmount || null,
+    eligibility_text: null,
+    tags: ['NSF', 'award'],
+    source_url: `https://www.nsf.gov/awardsearch/showAward?AWD_ID=${award.id}`,
+    source_name: source.name,
+    source_identifier: String(award.id),
+  }));
+};
 
-                // Upsert the grant (update if exists based on title+funder)
-                const { error } = await insforge
-                    .from('grants')
-                    .upsert({
-                        title: grant.title,
-                        description: grant.description,
-                        funder: grant.funder,
-                        deadline: grant.deadline,
-                        amount_min: grant.amount_min,
-                        amount_max: grant.amount_max,
-                        eligibility_text: grant.eligibility_text,
-                        tags: grant.tags,
-                        source_url: grant.source_url,
-                        embedding: JSON.stringify(embedding),
-                        updated_at: new Date().toISOString(),
-                    });
+const upsertGrant = async (insforge: any, grant: RawGrant) => {
+  const { data: existing } = await insforge.database
+    .from('grants')
+    .select('id')
+    .eq('source_identifier', grant.source_identifier)
+    .eq('source_name', grant.source_name)
+    .maybeSingle();
 
-                if (error) {
-                    results.errors.push(`Failed to upsert ${grant.title}: ${error.message}`);
-                } else {
-                    results.added++;
-                }
-            } catch (err: any) {
-                results.errors.push(`Error processing ${grant.title}: ${err.message}`);
-            }
-        }
+  const textToEmbed = `${grant.title} ${grant.description || ''} ${grant.funder || ''} ${grant.tags?.join(' ') || ''}`;
+  const embeddingResponse = await insforge.ai.embeddings.create({
+    model: INSFORGE_EMBEDDING_MODEL,
+    input: textToEmbed,
+  });
 
-        return NextResponse.json({
-            success: true,
-            message: `Grant Scout completed. Processed ${results.processed}, added/updated ${results.added}.`,
-            results,
-        });
-    } catch (error: any) {
-        console.error('Grant Scout error:', error);
-        return NextResponse.json(
-            { error: 'Grant Scout failed', details: error.message },
-            { status: 500 }
-        );
+  if (!embeddingResponse.data) {
+    throw new Error('Failed to generate embedding');
+  }
+
+  const embedding = embeddingResponse.data[0].embedding;
+
+  const payload = {
+    title: grant.title,
+    description: grant.description,
+    funder: grant.funder,
+    deadline: grant.deadline,
+    amount_min: grant.amount_min,
+    amount_max: grant.amount_max,
+    eligibility_text: grant.eligibility_text,
+    tags: grant.tags,
+    categories: grant.categories,
+    eligibility_json: grant.eligibility_json,
+    source_url: grant.source_url,
+    source_name: grant.source_name,
+    source_identifier: grant.source_identifier,
+    embedding: embedding as any,
+    updated_at: new Date().toISOString(),
+  };
+
+  if (existing?.id) {
+    const { error } = await insforge.database.from('grants').update(payload).eq('id', existing.id);
+    if (error) throw error;
+    return 'updated';
+  }
+
+  const { error } = await insforge.database.from('grants').insert({
+    ...payload,
+    created_at: new Date().toISOString(),
+  });
+  if (error) throw error;
+  return 'added';
+};
+
+const ensureSourceRecord = async (insforge: any, source: GrantSource) => {
+  const { data: existing } = await insforge.database
+    .from('grant_sources')
+    .select('id, name')
+    .eq('url', source.url)
+    .maybeSingle();
+
+  if (existing?.id) return existing;
+
+  const { data } = await insforge.database
+    .from('grant_sources')
+    .insert({ name: source.name, url: source.url, created_at: new Date().toISOString() })
+    .select()
+    .single();
+
+  return data || null;
+};
+
+const createIngestionRun = async (insforge: any, sourceId: string) => {
+  const { data } = await insforge.database
+    .from('ingestion_runs')
+    .insert({
+      source_id: sourceId,
+      status: 'running',
+      summary: {},
+      started_at: new Date().toISOString(),
+    })
+    .select()
+    .single();
+  return data || null;
+};
+
+const finalizeIngestionRun = async (insforge: any, runId: string, status: string, summary: any) => {
+  await insforge.database
+    .from('ingestion_runs')
+    .update({
+      status,
+      summary,
+      finished_at: new Date().toISOString(),
+    })
+    .eq('id', runId);
+};
+
+const ingestSource = async (insforge: any, source: GrantSource, perSourceLimit: number) => {
+  const summary = {
+    source: source.slug,
+    name: source.name,
+    processed: 0,
+    added: 0,
+    updated: 0,
+    errors: [] as string[],
+    status: 'completed',
+  };
+
+  let sourceRecord: any = null;
+  let runRecord: any = null;
+
+  try {
+    sourceRecord = await ensureSourceRecord(insforge, source);
+    if (sourceRecord?.id) {
+      runRecord = await createIngestionRun(insforge, sourceRecord.id);
     }
+  } catch (error: any) {
+    summary.errors.push(error.message);
+  }
+
+  try {
+    let grants: RawGrant[] = [];
+
+    if (source.type === 'rss') {
+      grants = await fetchRssSource(source, perSourceLimit);
+    } else if (source.type === 'api' && source.api === 'nsf-awards') {
+      grants = await fetchNsfAwards(perSourceLimit, source);
+    } else {
+      summary.status = 'skipped';
+    }
+
+    for (const grant of grants) {
+      try {
+        summary.processed += 1;
+        const result = await upsertGrant(insforge, grant);
+        if (result === 'added') summary.added += 1;
+        if (result === 'updated') summary.updated += 1;
+      } catch (error: any) {
+        summary.errors.push(error.message);
+      }
+    }
+  } catch (error: any) {
+    summary.status = 'failed';
+    summary.errors.push(error.message);
+  }
+
+  try {
+    if (sourceRecord?.id) {
+      await insforge.database
+        .from('grant_sources')
+        .update({ last_ingested_at: new Date().toISOString() })
+        .eq('id', sourceRecord.id);
+    }
+
+    if (runRecord?.id) {
+      await finalizeIngestionRun(insforge, runRecord.id, summary.status, summary);
+    }
+  } catch (error: any) {
+    summary.errors.push(error.message);
+  }
+
+  return summary;
+};
+
+export async function POST(request: Request) {
+  try {
+    const apiKey = process.env.INGEST_API_KEY;
+    const headerKey = request.headers.get('x-api-key');
+    const { token } = await auth();
+
+    if (apiKey && headerKey !== apiKey && !token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    if (!apiKey || headerKey !== apiKey) {
+      const clientKey = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'local';
+      const rate = checkRateLimit(`scout:${clientKey}`, 4, 60 * 1000);
+      if (!rate.allowed) {
+        return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 });
+      }
+    }
+
+    const body = await request.json().catch(() => ({}));
+    const limit = typeof body.limit === 'number' ? body.limit : 60;
+    const sourcesFilter = Array.isArray(body.sources) ? body.sources : null;
+
+    const grantSources = await loadGrantSources();
+    const sources = (grantSources as GrantSource[]).filter((source) =>
+      sourcesFilter ? sourcesFilter.includes(source.slug) : true
+    );
+
+    const perSourceLimit = Math.max(3, Math.ceil(limit / Math.max(1, sources.length)));
+
+    const insforge = createClient({
+      baseUrl: process.env.NEXT_PUBLIC_INSFORGE_BASE_URL!,
+      anonKey: process.env.NEXT_PUBLIC_INSFORGE_ANON_KEY!,
+    });
+
+    const results = {
+      processed: 0,
+      added: 0,
+      updated: 0,
+      errors: [] as string[],
+      sources: [] as any[],
+    };
+
+    const batchSize = 10;
+    for (let i = 0; i < sources.length; i += batchSize) {
+      const batch = sources.slice(i, i + batchSize);
+      const batchResults = await Promise.all(
+        batch.map((source) => ingestSource(insforge, source, perSourceLimit))
+      );
+
+      for (const summary of batchResults) {
+        results.sources.push(summary);
+        results.processed += summary.processed;
+        results.added += summary.added;
+        results.updated += summary.updated;
+        results.errors.push(...summary.errors);
+      }
+    }
+
+    if (results.processed === 0) {
+      for (const grant of SAMPLE_GRANTS) {
+        try {
+          const fallbackGrant: RawGrant = {
+            ...grant,
+            source_name: 'Sample',
+            source_identifier: `${grant.title}-${grant.funder}`,
+          };
+          await upsertGrant(insforge, fallbackGrant);
+          results.processed += 1;
+        } catch (error: any) {
+          results.errors.push(error.message);
+        }
+      }
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: `Grant Scout completed. Processed ${results.processed}, added ${results.added}, updated ${results.updated}.`,
+      results,
+    });
+  } catch (error: any) {
+    console.error('Grant Scout error:', error);
+    return NextResponse.json(
+      { error: 'Grant Scout failed', details: error.message },
+      { status: 500 }
+    );
+  }
 }
 
-// GET - Check scout status and last run
 export async function GET() {
-    return NextResponse.json({
-        agent: 'Grant Scout',
-        description: 'Discovers and ingests new grants with AI-generated embeddings',
-        status: 'ready',
-        triggerEndpoint: 'POST /api/ai/scout',
-        grantSources: SAMPLE_GRANT_SOURCES.length,
-    });
+  return NextResponse.json({
+    agent: 'Grant Scout',
+    description: 'Aggregates grants from the configured sources list.',
+    status: 'ready',
+    triggerEndpoint: 'POST /api/ai/scout',
+  });
 }

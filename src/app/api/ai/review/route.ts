@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@insforge/sdk';
 import { auth } from '@insforge/nextjs/server';
+import { INSFORGE_LLM_MODEL } from '@/lib/ai-config';
+import { getCompletionContent, parseJsonSafe } from '@/lib/ai-helpers';
+import { checkRateLimit } from '@/lib/rate-limit';
 
 // POST - Simulate grant review and score proposal
 export async function POST(request: Request) {
@@ -8,6 +11,12 @@ export async function POST(request: Request) {
         const { token } = await auth();
         if (!token) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
+        const clientKey = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'local';
+        const rate = checkRateLimit(`review:${clientKey}`, 10, 60 * 1000);
+        if (!rate.allowed) {
+            return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 });
         }
 
         const { proposalText, grantTitle, reviewCriteria } = await request.json();
@@ -62,27 +71,20 @@ ${proposalText}
 Please provide a thorough ${criteria}-style review of this proposal.`;
 
         const response = await insforge.ai.chat.completions.create({
-            model: 'gpt-4o',
+            model: INSFORGE_LLM_MODEL,
             messages: [
                 { role: 'system', content: systemPrompt },
                 { role: 'user', content: userPrompt },
             ],
         });
 
-        // Parse the response
-        let review;
-        try {
-            const content = response.data?.choices?.[0]?.message?.content || '';
-            const jsonMatch = content.match(/```json\n?([\s\S]*?)\n?```/) || [null, content];
-            review = JSON.parse(jsonMatch[1] || content);
-        } catch {
-            review = {
-                overallScore: 5,
-                overallImpact: 'Medium',
-                summary: response.data?.choices?.[0]?.message?.content || 'Review failed',
-                raw: true,
-            };
-        }
+        const content = getCompletionContent(response);
+        const review = parseJsonSafe(content, {
+            overallScore: 5,
+            overallImpact: 'Medium',
+            summary: content || 'Review failed',
+            raw: true,
+        });
 
         return NextResponse.json({
             success: true,

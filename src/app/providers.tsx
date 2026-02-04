@@ -1,26 +1,28 @@
 'use client';
-import { InsforgeBrowserProvider, type InitialAuthState } from '@insforge/nextjs';
+
+import { InsforgeBrowserProvider } from '@insforge/nextjs';
 import { createClient } from '@insforge/sdk';
-import { useState } from 'react';
+import { useMemo } from 'react';
+import { ToastProvider } from '@/components/ui/Toast';
 
 export function InsforgeProvider({
     children,
-    initialAuthState,
 }: {
     children: React.ReactNode;
-    initialAuthState?: InitialAuthState;
 }) {
-    const [client] = useState(() => createClient({
+    const client = useMemo(() => createClient({
         baseUrl: process.env.NEXT_PUBLIC_INSFORGE_BASE_URL!,
-        anonKey: process.env.NEXT_PUBLIC_INSFORGE_ANON_KEY!
-    }));
+        anonKey: process.env.NEXT_PUBLIC_INSFORGE_ANON_KEY!,
+    }), []);
 
     return (
         <InsforgeBrowserProvider
             client={client}
-            initialState={initialAuthState}
+            afterSignInUrl="/grants"
         >
-            {children}
+            <ToastProvider>
+                {children}
+            </ToastProvider>
         </InsforgeBrowserProvider>
     );
 }

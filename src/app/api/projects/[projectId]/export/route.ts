@@ -22,7 +22,7 @@ export async function POST(
         });
 
         // Fetch project details
-        const { data: project } = await insforge
+        const { data: project } = await insforge.database
             .from('projects')
             .select('*, grants(*)')
             .eq('id', projectId)
@@ -33,26 +33,17 @@ export async function POST(
         }
 
         // Fetch artifacts
-        const { data: artifacts } = await insforge
+        const { data: artifacts } = await insforge.database
             .from('artifacts')
             .select('*')
             .eq('project_id', projectId);
 
-        // Generate signed URLs for artifacts
-        const artifactsWithUrls = await Promise.all(
-            (artifacts || []).map(async (artifact: any) => {
-                if (!artifact.storage_path) return { ...artifact, downloadUrl: null };
-
-                const { data } = await insforge.storage
-                    .from('artifacts')
-                    .createSignedUrl(artifact.storage_path, 3600); // 1 hour expiry
-
-                return {
-                    ...artifact,
-                    downloadUrl: data?.signedUrl || null,
-                };
-            })
-        );
+        const artifactsWithUrls = (artifacts || []).map((artifact: any) => ({
+            ...artifact,
+            downloadUrl: artifact.storage_path
+                ? `/api/projects/${projectId}/artifacts/download?id=${artifact.id}`
+                : null,
+        }));
 
         // Generate manifest
         const manifest = {
@@ -130,12 +121,20 @@ export async function POST(
 </body>
 </html>`;
 
+        const manifestText = JSON.stringify(manifest, null, 2);
+        const htmlName = `${project.title || 'submission'}-proposal.html`;
+        const manifestName = `${project.title || 'submission'}-manifest.json`;
+
         return NextResponse.json({
             success: true,
             package: {
                 html: fullHtml,
                 manifest,
                 artifacts: artifactsWithUrls,
+                files: [
+                    { name: htmlName, content: fullHtml },
+                    { name: manifestName, content: manifestText },
+                ],
             },
         });
     } catch (error) {

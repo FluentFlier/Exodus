@@ -16,8 +16,18 @@ interface Member {
     profiles: Profile;
 }
 
+interface Invite {
+    id: string;
+    invited_email: string | null;
+    role: string | null;
+    status: string | null;
+    created_at: string | null;
+    token: string | null;
+}
+
 export default function TeamList({ projectId }: { projectId: string }) {
     const [members, setMembers] = useState<Member[]>([]);
+    const [invites, setInvites] = useState<Invite[]>([]);
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [inviteEmail, setInviteEmail] = useState('');
@@ -36,6 +46,11 @@ export default function TeamList({ projectId }: { projectId: string }) {
             if (data.members) {
                 setMembers(data.members);
             }
+            const inviteRes = await fetch(`/api/projects/${projectId}/invites`);
+            const inviteData = await inviteRes.json();
+            if (inviteData.invites) {
+                setInvites(inviteData.invites);
+            }
         } catch (err) {
             console.error('Failed to fetch members:', err);
         } finally {
@@ -43,7 +58,7 @@ export default function TeamList({ projectId }: { projectId: string }) {
         }
     };
 
-    const handleInvite = async (e: React.FormEvent) => {
+    const handleInvite = async (e: any) => {
         e.preventDefault();
         if (!inviteEmail.trim()) return;
 
@@ -51,7 +66,7 @@ export default function TeamList({ projectId }: { projectId: string }) {
         setError('');
 
         try {
-            const res = await fetch(`/api/projects/${projectId}/members`, {
+            const res = await fetch(`/api/projects/${projectId}/invites`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: inviteEmail, role: inviteRole }),
@@ -64,9 +79,8 @@ export default function TeamList({ projectId }: { projectId: string }) {
                 return;
             }
 
-            // Add new member to list
-            if (data.member) {
-                setMembers((prev) => [...prev, data.member]);
+            if (data.invite) {
+                setInvites((prev) => [data.invite, ...prev]);
             }
 
             // Reset form and close modal
@@ -94,6 +108,27 @@ export default function TeamList({ projectId }: { projectId: string }) {
         } catch (err) {
             console.error('Failed to remove member:', err);
         }
+    };
+
+    const handleRevoke = async (inviteId: string) => {
+        if (!confirm('Revoke this invite?')) return;
+
+        try {
+            const res = await fetch(`/api/projects/${projectId}/invites?id=${inviteId}`, {
+                method: 'DELETE',
+            });
+
+            if (res.ok) {
+                setInvites((prev) => prev.filter((invite) => invite.id !== inviteId));
+            }
+        } catch (err) {
+            console.error('Failed to revoke invite:', err);
+        }
+    };
+
+    const getInviteLink = (token: string | null) => {
+        if (!token) return '';
+        return `${window.location.origin}/invites/${token}`;
     };
 
     const getRoleBadgeClass = (role: string | null) => {
@@ -165,6 +200,42 @@ export default function TeamList({ projectId }: { projectId: string }) {
                 )}
             </div>
 
+            {invites.length > 0 && (
+                <div className="mt-4">
+                    <div className="text-xs uppercase tracking-[0.2em] text-gray-500">Pending Invites</div>
+                    <div className="mt-2 space-y-2 max-h-40 overflow-y-auto">
+                        {invites.map((invite) => (
+                            <div
+                                key={invite.id}
+                                className="flex items-center justify-between p-2 bg-gray-800 rounded"
+                            >
+                                <div className="min-w-0">
+                                    <div className="text-sm text-gray-200 truncate">{invite.invited_email}</div>
+                                    <div className="text-xs text-gray-500">{invite.role || 'viewer'} • {invite.status}</div>
+                                </div>
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={() => {
+                                            const link = getInviteLink(invite.token);
+                                            if (link) void navigator.clipboard.writeText(link);
+                                        }}
+                                        className="text-xs text-indigo-300 hover:text-indigo-200"
+                                    >
+                                        Copy link
+                                    </button>
+                                    <button
+                                        onClick={() => handleRevoke(invite.id)}
+                                        className="text-xs text-red-400 hover:text-red-300"
+                                    >
+                                        Revoke
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
             <button
                 onClick={() => setShowModal(true)}
                 className="mt-4 w-full py-2 bg-indigo-600/20 text-indigo-400 border border-indigo-600/50 rounded hover:bg-indigo-600/30 text-sm"
@@ -180,7 +251,7 @@ export default function TeamList({ projectId }: { projectId: string }) {
                             Invite Collaborator
                         </h4>
 
-                        <form onSubmit={handleInvite}>
+                        <form onSubmit={(e) => void handleInvite(e)}>
                             <div className="mb-4">
                                 <label className="block text-sm text-gray-400 mb-2">
                                     Email Address

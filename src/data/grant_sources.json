@@ -1,0 +1,1691 @@
+[
+  {
+    "slug": "grants-gov-new-opps",
+    "name": "Grants.gov New Opportunities",
+    "url": "https://www.grants.gov/rss/GG_NewOppByAgency.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "Grants.gov"
+  },
+  {
+    "slug": "grants-gov-all-opps",
+    "name": "Grants.gov All Opportunities",
+    "url": "https://www.grants.gov/rss/GG_AllOpportunities.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "Grants.gov"
+  },
+  {
+    "slug": "nih-guide",
+    "name": "NIH Guide for Grants and Contracts",
+    "url": "https://grants.nih.gov/grants/guide/rss/nih-guide.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "National Institutes of Health"
+  },
+  {
+    "slug": "nih-guide-briefs",
+    "name": "NIH Guide Briefs",
+    "url": "https://grants.nih.gov/grants/guide/rss/nih-guide-brief.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "National Institutes of Health"
+  },
+  {
+    "slug": "nsf-awards-api",
+    "name": "NSF Awards API",
+    "url": "https://api.nsf.gov/services/v1/awards.json",
+    "type": "api",
+    "api": "nsf-awards",
+    "category": "federal",
+    "funder": "National Science Foundation"
+  },
+  {
+    "slug": "nsf-news",
+    "name": "NSF News",
+    "url": "https://www.nsf.gov/rss/rss_www.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "National Science Foundation"
+  },
+  {
+    "slug": "cdc-news",
+    "name": "CDC Newsroom",
+    "url": "https://tools.cdc.gov/api/v2/resources/media/403372.rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "Centers for Disease Control and Prevention"
+  },
+  {
+    "slug": "cdc-funding",
+    "name": "CDC Funding Opportunities",
+    "url": "https://tools.cdc.gov/api/v2/resources/media/403372.rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "Centers for Disease Control and Prevention"
+  },
+  {
+    "slug": "doe-news",
+    "name": "DOE News",
+    "url": "https://www.energy.gov/rss/news.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "U.S. Department of Energy"
+  },
+  {
+    "slug": "doe-office-of-science",
+    "name": "DOE Office of Science",
+    "url": "https://www.energy.gov/science/listings/office-science-news",
+    "type": "manual",
+    "category": "federal",
+    "funder": "U.S. Department of Energy"
+  },
+  {
+    "slug": "arpa-h",
+    "name": "ARPA-H",
+    "url": "https://arpa-h.gov/news",
+    "type": "manual",
+    "category": "federal",
+    "funder": "ARPA-H"
+  },
+  {
+    "slug": "darpa",
+    "name": "DARPA Funding",
+    "url": "https://www.darpa.mil/work-with-us/opportunities",
+    "type": "manual",
+    "category": "federal",
+    "funder": "DARPA"
+  },
+  {
+    "slug": "usda-nifa",
+    "name": "USDA NIFA",
+    "url": "https://www.nifa.usda.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "USDA NIFA"
+  },
+  {
+    "slug": "usda-grants",
+    "name": "USDA Grants",
+    "url": "https://www.usda.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "USDA"
+  },
+  {
+    "slug": "ed-grants",
+    "name": "Department of Education",
+    "url": "https://www.ed.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "U.S. Department of Education"
+  },
+  {
+    "slug": "nih-nci",
+    "name": "National Cancer Institute",
+    "url": "https://www.cancer.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "National Cancer Institute"
+  },
+  {
+    "slug": "nih-nia",
+    "name": "National Institute on Aging",
+    "url": "https://www.nia.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "National Institute on Aging"
+  },
+  {
+    "slug": "nih-nimh",
+    "name": "National Institute of Mental Health",
+    "url": "https://www.nimh.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "National Institute of Mental Health"
+  },
+  {
+    "slug": "nih-nhlbi",
+    "name": "National Heart, Lung, and Blood Institute",
+    "url": "https://www.nhlbi.nih.gov/news/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NHLBI"
+  },
+  {
+    "slug": "nih-nigms",
+    "name": "NIGMS",
+    "url": "https://www.nigms.nih.gov/_layouts/15/NIGMS/RSS.aspx",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIGMS"
+  },
+  {
+    "slug": "nih-nibib",
+    "name": "NIBIB",
+    "url": "https://www.nibib.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIBIB"
+  },
+  {
+    "slug": "nih-ninds",
+    "name": "NINDS",
+    "url": "https://www.ninds.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NINDS"
+  },
+  {
+    "slug": "nih-nidcd",
+    "name": "NIDCD",
+    "url": "https://www.nidcd.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIDCD"
+  },
+  {
+    "slug": "nih-nidcr",
+    "name": "NIDCR",
+    "url": "https://www.nidcr.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIDCR"
+  },
+  {
+    "slug": "nih-nidddk",
+    "name": "NIDDK",
+    "url": "https://www.niddk.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIDDK"
+  },
+  {
+    "slug": "nih-niehs",
+    "name": "NIEHS",
+    "url": "https://www.niehs.nih.gov/news/releases/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIEHS"
+  },
+  {
+    "slug": "nih-nicdh",
+    "name": "NICHD",
+    "url": "https://www.nichd.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NICHD"
+  },
+  {
+    "slug": "nih-niaaa",
+    "name": "NIAAA",
+    "url": "https://www.niaaa.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIAAA"
+  },
+  {
+    "slug": "nih-nida",
+    "name": "NIDA",
+    "url": "https://nida.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIDA"
+  },
+  {
+    "slug": "nih-nimh-funding",
+    "name": "NIMH Funding",
+    "url": "https://www.nimh.nih.gov/funding/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIMH"
+  },
+  {
+    "slug": "nih-nei",
+    "name": "NEI",
+    "url": "https://www.nei.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NEI"
+  },
+  {
+    "slug": "nih-nlm",
+    "name": "NLM",
+    "url": "https://www.nlm.nih.gov/rss.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NLM"
+  },
+  {
+    "slug": "nih-ncats",
+    "name": "NCATS",
+    "url": "https://ncats.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NCATS"
+  },
+  {
+    "slug": "nih-fic",
+    "name": "Fogarty International Center",
+    "url": "https://www.fic.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "FIC"
+  },
+  {
+    "slug": "nih-nccih",
+    "name": "NCCIH",
+    "url": "https://www.nccih.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NCCIH"
+  },
+  {
+    "slug": "nih-ninr",
+    "name": "NINR",
+    "url": "https://www.ninr.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NINR"
+  },
+  {
+    "slug": "nih-nrsa",
+    "name": "NIH NRSA",
+    "url": "https://researchtraining.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIH"
+  },
+  {
+    "slug": "nih-od",
+    "name": "NIH Office of the Director",
+    "url": "https://www.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIH"
+  },
+  {
+    "slug": "nsf-education",
+    "name": "NSF Education and Human Resources",
+    "url": "https://www.nsf.gov/rss/rss_education.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NSF"
+  },
+  {
+    "slug": "nsf-engineering",
+    "name": "NSF Engineering",
+    "url": "https://www.nsf.gov/rss/rss_engineering.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NSF"
+  },
+  {
+    "slug": "nsf-computer",
+    "name": "NSF Computer and Information Science",
+    "url": "https://www.nsf.gov/rss/rss_cise.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NSF"
+  },
+  {
+    "slug": "nsf-biological",
+    "name": "NSF Biological Sciences",
+    "url": "https://www.nsf.gov/rss/rss_bio.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NSF"
+  },
+  {
+    "slug": "nsf-mps",
+    "name": "NSF Mathematical and Physical Sciences",
+    "url": "https://www.nsf.gov/rss/rss_mps.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NSF"
+  },
+  {
+    "slug": "nsf-geosciences",
+    "name": "NSF Geosciences",
+    "url": "https://www.nsf.gov/rss/rss_geo.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NSF"
+  },
+  {
+    "slug": "nih-nhlbi-funding",
+    "name": "NHLBI Funding",
+    "url": "https://www.nhlbi.nih.gov/rss/funding-opportunities",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NHLBI"
+  },
+  {
+    "slug": "nih-nci-funding",
+    "name": "NCI Funding",
+    "url": "https://www.cancer.gov/rss/funding",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NCI"
+  },
+  {
+    "slug": "aaf",
+    "name": "Autism Science Foundation",
+    "url": "https://autismsciencefoundation.org/feed/",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "Autism Science Foundation"
+  },
+  {
+    "slug": "ala",
+    "name": "American Lung Association",
+    "url": "https://www.lung.org/rss",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "American Lung Association"
+  },
+  {
+    "slug": "alzheimers-association",
+    "name": "Alzheimer's Association",
+    "url": "https://www.alz.org/rss",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "Alzheimer's Association"
+  },
+  {
+    "slug": "arc",
+    "name": "Arthritis Foundation",
+    "url": "https://www.arthritis.org/rss",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "Arthritis Foundation"
+  },
+  {
+    "slug": "american-heart",
+    "name": "American Heart Association",
+    "url": "https://newsroom.heart.org/rss",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "American Heart Association"
+  },
+  {
+    "slug": "american-cancer",
+    "name": "American Cancer Society",
+    "url": "https://www.cancer.org/rss",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "American Cancer Society"
+  },
+  {
+    "slug": "ansari-research",
+    "name": "Ansari Research",
+    "url": "https://www.ansari.org/rss",
+    "type": "manual",
+    "category": "foundation",
+    "funder": "Ansari Research"
+  },
+  {
+    "slug": "arcus",
+    "name": "Arcus Foundation",
+    "url": "https://www.arcusfoundation.org/feed/",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "Arcus Foundation"
+  },
+  {
+    "slug": "asf",
+    "name": "American Sociological Foundation",
+    "url": "https://www.asanet.org/rss",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "American Sociological Foundation"
+  },
+  {
+    "slug": "bill-gates",
+    "name": "Bill and Melinda Gates Foundation",
+    "url": "https://www.gatesfoundation.org/Ideas/Media-Center/Press-Releases-RSS",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "Gates Foundation"
+  },
+  {
+    "slug": "cancer-research-uk",
+    "name": "Cancer Research UK",
+    "url": "https://www.cancerresearchuk.org/rss",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "Cancer Research UK"
+  },
+  {
+    "slug": "czi",
+    "name": "Chan Zuckerberg Initiative",
+    "url": "https://chanzuckerberg.com/feed/",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "Chan Zuckerberg Initiative"
+  },
+  {
+    "slug": "cochrane",
+    "name": "Cochrane",
+    "url": "https://www.cochrane.org/rss",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "Cochrane"
+  },
+  {
+    "slug": "doris-duke",
+    "name": "Doris Duke Charitable Foundation",
+    "url": "https://www.ddcf.org/rss",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "Doris Duke Charitable Foundation"
+  },
+  {
+    "slug": "doe-arf",
+    "name": "American Research Foundation",
+    "url": "https://www.arfoundation.org/rss",
+    "type": "manual",
+    "category": "foundation",
+    "funder": "American Research Foundation"
+  },
+  {
+    "slug": "edna-mcconnell",
+    "name": "Edna McConnell Clark Foundation",
+    "url": "https://emcf.org/feed/",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "Edna McConnell Clark Foundation"
+  },
+  {
+    "slug": "fahs-beck",
+    "name": "Fahs-Beck Fund",
+    "url": "https://www.fahsbeckfund.org/rss",
+    "type": "manual",
+    "category": "foundation",
+    "funder": "Fahs-Beck Fund"
+  },
+  {
+    "slug": "gordon-betty-moore",
+    "name": "Gordon and Betty Moore Foundation",
+    "url": "https://www.moore.org/rss",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "Gordon and Betty Moore Foundation"
+  },
+  {
+    "slug": "hhmi",
+    "name": "Howard Hughes Medical Institute",
+    "url": "https://www.hhmi.org/news/rss",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "Howard Hughes Medical Institute"
+  },
+  {
+    "slug": "jdrf",
+    "name": "JDRF",
+    "url": "https://www.jdrf.org/blog/rss",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "JDRF"
+  },
+  {
+    "slug": "leukemia-lymphoma",
+    "name": "Leukemia and Lymphoma Society",
+    "url": "https://www.lls.org/rss",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "LLS"
+  },
+  {
+    "slug": "michael-j-fox",
+    "name": "Michael J. Fox Foundation",
+    "url": "https://www.michaeljfox.org/rss",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "Michael J. Fox Foundation"
+  },
+  {
+    "slug": "mockingbird",
+    "name": "Mockingbird Foundation",
+    "url": "https://www.mfgrants.org/rss",
+    "type": "manual",
+    "category": "foundation",
+    "funder": "Mockingbird Foundation"
+  },
+  {
+    "slug": "nasa",
+    "name": "NASA",
+    "url": "https://www.nasa.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NASA"
+  },
+  {
+    "slug": "noaa",
+    "name": "NOAA",
+    "url": "https://www.noaa.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NOAA"
+  },
+  {
+    "slug": "nasa-solicitations",
+    "name": "NASA Solicitation Notices",
+    "url": "https://nspires.nasaprs.com/external/rss/solicitation-rss.html",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NASA"
+  },
+  {
+    "slug": "nih-funding-opps",
+    "name": "NIH Funding Opportunities",
+    "url": "https://grants.nih.gov/grants/guide/rss/nih-guide-notices.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIH"
+  },
+  {
+    "slug": "nsf-forecast",
+    "name": "NSF Funding Opportunities",
+    "url": "https://www.nsf.gov/rss/rss_funding.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NSF"
+  },
+  {
+    "slug": "nih-reporter",
+    "name": "NIH RePORTER",
+    "url": "https://reporter.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIH"
+  },
+  {
+    "slug": "nih-rfa",
+    "name": "NIH Requests for Applications",
+    "url": "https://grants.nih.gov/grants/guide/rss/PA-Files.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIH"
+  },
+  {
+    "slug": "nsf-advance",
+    "name": "NSF ADVANCE",
+    "url": "https://www.nsf.gov/rss/rss_advance.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NSF"
+  },
+  {
+    "slug": "nsf-entrepreneurship",
+    "name": "NSF Innovation",
+    "url": "https://www.nsf.gov/rss/rss_ii.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NSF"
+  },
+  {
+    "slug": "doe-arpa-e",
+    "name": "ARPA-E",
+    "url": "https://arpa-e.energy.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "ARPA-E"
+  },
+  {
+    "slug": "nih-heal",
+    "name": "NIH HEAL Initiative",
+    "url": "https://heal.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIH"
+  },
+  {
+    "slug": "nih-brain",
+    "name": "BRAIN Initiative",
+    "url": "https://braininitiative.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIH"
+  },
+  {
+    "slug": "nih-cures",
+    "name": "Cancer Moonshot",
+    "url": "https://www.cancer.gov/rss/moonshot",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIH"
+  },
+  {
+    "slug": "nih-allofus",
+    "name": "All of Us Research Program",
+    "url": "https://allofus.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIH"
+  },
+  {
+    "slug": "nih-covid",
+    "name": "NIH COVID-19",
+    "url": "https://covid19.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIH"
+  },
+  {
+    "slug": "nih-od-foa",
+    "name": "NIH Funding Announcements",
+    "url": "https://grants.nih.gov/grants/guide/rss/pa-files.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIH"
+  },
+  {
+    "slug": "smithsonian",
+    "name": "Smithsonian Institution",
+    "url": "https://www.si.edu/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "Smithsonian Institution"
+  },
+  {
+    "slug": "nea",
+    "name": "National Endowment for the Arts",
+    "url": "https://www.arts.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NEA"
+  },
+  {
+    "slug": "neh",
+    "name": "National Endowment for the Humanities",
+    "url": "https://www.neh.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NEH"
+  },
+  {
+    "slug": "nih-bioinformatics",
+    "name": "NIH Bioinformatics",
+    "url": "https://www.nlm.nih.gov/rss/bioinformatics.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIH"
+  },
+  {
+    "slug": "nih-clinical",
+    "name": "Clinical Trials",
+    "url": "https://clinicaltrials.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIH"
+  },
+  {
+    "slug": "doj",
+    "name": "Department of Justice",
+    "url": "https://www.justice.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "DOJ"
+  },
+  {
+    "slug": "hhs",
+    "name": "HHS",
+    "url": "https://www.hhs.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "HHS"
+  },
+  {
+    "slug": "usaid",
+    "name": "USAID",
+    "url": "https://www.usaid.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "USAID"
+  },
+  {
+    "slug": "gsa",
+    "name": "GSA",
+    "url": "https://www.gsa.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "GSA"
+  },
+  {
+    "slug": "doi",
+    "name": "Department of the Interior",
+    "url": "https://www.doi.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "DOI"
+  },
+  {
+    "slug": "usgs",
+    "name": "USGS",
+    "url": "https://www.usgs.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "USGS"
+  },
+  {
+    "slug": "epa",
+    "name": "EPA",
+    "url": "https://www.epa.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "EPA"
+  },
+  {
+    "slug": "nrc",
+    "name": "National Research Council Canada",
+    "url": "https://nrc.canada.ca/rss",
+    "type": "rss",
+    "category": "international",
+    "funder": "NRC Canada"
+  },
+  {
+    "slug": "ukri",
+    "name": "UK Research and Innovation",
+    "url": "https://www.ukri.org/rss",
+    "type": "rss",
+    "category": "international",
+    "funder": "UKRI"
+  },
+  {
+    "slug": "nih-foa-notices",
+    "name": "NIH FOA Notices",
+    "url": "https://grants.nih.gov/grants/guide/rss/NOT-OD.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIH"
+  },
+  {
+    "slug": "australian-research",
+    "name": "Australian Research Council",
+    "url": "https://www.arc.gov.au/rss",
+    "type": "rss",
+    "category": "international",
+    "funder": "Australian Research Council"
+  },
+  {
+    "slug": "european-commission",
+    "name": "European Commission - Horizon",
+    "url": "https://ec.europa.eu/info/funding-tenders/opportunities/rss",
+    "type": "rss",
+    "category": "international",
+    "funder": "European Commission"
+  },
+  {
+    "slug": "wellcome",
+    "name": "Wellcome Trust",
+    "url": "https://wellcome.org/rss",
+    "type": "rss",
+    "category": "international",
+    "funder": "Wellcome Trust"
+  },
+  {
+    "slug": "nih-nihsp",
+    "name": "NIH Small Business Programs",
+    "url": "https://seed.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIH"
+  },
+  {
+    "slug": "nih-ctsa",
+    "name": "CTSA Program",
+    "url": "https://ncats.nih.gov/ctsa/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIH"
+  },
+  {
+    "slug": "nih-nichd-funding",
+    "name": "NICHD Funding",
+    "url": "https://www.nichd.nih.gov/grants-contracts/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NICHD"
+  },
+  {
+    "slug": "nih-nii",
+    "name": "NIH New Investigator",
+    "url": "https://newinvestigators.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIH"
+  },
+  {
+    "slug": "nih-nci-cancer-control",
+    "name": "NCI Cancer Control",
+    "url": "https://cancercontrol.cancer.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NCI"
+  },
+  {
+    "slug": "nih-nci-prevention",
+    "name": "NCI Prevention",
+    "url": "https://prevention.cancer.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NCI"
+  },
+  {
+    "slug": "nih-nci-small-business",
+    "name": "NCI SBIR",
+    "url": "https://sbir.cancer.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NCI"
+  },
+  {
+    "slug": "nih-nci-technology",
+    "name": "NCI Technology Transfer",
+    "url": "https://techtransfer.cancer.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NCI"
+  },
+  {
+    "slug": "nih-nci-training",
+    "name": "NCI Training",
+    "url": "https://training.cancer.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NCI"
+  },
+  {
+    "slug": "nih-nci-survivorship",
+    "name": "NCI Survivorship",
+    "url": "https://cancercontrol.cancer.gov/ocs/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NCI"
+  },
+  {
+    "slug": "nih-ninds-funding",
+    "name": "NINDS Funding",
+    "url": "https://www.ninds.nih.gov/Funding/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NINDS"
+  },
+  {
+    "slug": "nih-nidcd-funding",
+    "name": "NIDCD Funding",
+    "url": "https://www.nidcd.nih.gov/funding/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIDCD"
+  },
+  {
+    "slug": "nih-nidcr-funding",
+    "name": "NIDCR Funding",
+    "url": "https://www.nidcr.nih.gov/funding/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIDCR"
+  },
+  {
+    "slug": "nih-nidddk-funding",
+    "name": "NIDDK Funding",
+    "url": "https://www.niddk.nih.gov/about-niddk/research-areas/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIDDK"
+  },
+  {
+    "slug": "nih-niehs-funding",
+    "name": "NIEHS Funding",
+    "url": "https://www.niehs.nih.gov/research/supported/grants/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIEHS"
+  },
+  {
+    "slug": "nih-nigms-funding",
+    "name": "NIGMS Funding",
+    "url": "https://www.nigms.nih.gov/funding/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIGMS"
+  },
+  {
+    "slug": "nih-nibib-funding",
+    "name": "NIBIB Funding",
+    "url": "https://www.nibib.nih.gov/grants/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIBIB"
+  },
+  {
+    "slug": "nih-ninr-funding",
+    "name": "NINR Funding",
+    "url": "https://www.ninr.nih.gov/researchfunding/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NINR"
+  },
+  {
+    "slug": "nih-niaaa-funding",
+    "name": "NIAAA Funding",
+    "url": "https://www.niaaa.nih.gov/grants/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIAAA"
+  },
+  {
+    "slug": "nih-nia-funding",
+    "name": "NIA Funding",
+    "url": "https://www.nia.nih.gov/grants-funding/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIA"
+  },
+  {
+    "slug": "nih-odh",
+    "name": "NIH Office of Data Science",
+    "url": "https://datascience.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIH"
+  },
+  {
+    "slug": "nih-od-foa2",
+    "name": "NIH FOA Updates",
+    "url": "https://grants.nih.gov/grants/guide/rss/pa_files.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIH"
+  },
+  {
+    "slug": "nsf-tip",
+    "name": "NSF TIP Directorate",
+    "url": "https://www.nsf.gov/rss/rss_tip.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NSF"
+  },
+  {
+    "slug": "nsf-physics",
+    "name": "NSF Physics",
+    "url": "https://www.nsf.gov/rss/rss_phys.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NSF"
+  },
+  {
+    "slug": "nsf-chemistry",
+    "name": "NSF Chemistry",
+    "url": "https://www.nsf.gov/rss/rss_chem.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NSF"
+  },
+  {
+    "slug": "nsf-materials",
+    "name": "NSF Materials Research",
+    "url": "https://www.nsf.gov/rss/rss_dmr.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NSF"
+  },
+  {
+    "slug": "nsf-astronomy",
+    "name": "NSF Astronomy",
+    "url": "https://www.nsf.gov/rss/rss_ast.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NSF"
+  },
+  {
+    "slug": "nsf-ocean",
+    "name": "NSF Ocean Sciences",
+    "url": "https://www.nsf.gov/rss/rss_oce.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NSF"
+  },
+  {
+    "slug": "nsf-polar",
+    "name": "NSF Polar Programs",
+    "url": "https://www.nsf.gov/rss/rss_opp.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NSF"
+  },
+  {
+    "slug": "nsf-social",
+    "name": "NSF Social Behavioral Economic Sciences",
+    "url": "https://www.nsf.gov/rss/rss_sbe.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NSF"
+  },
+  {
+    "slug": "nih-nibib-events",
+    "name": "NIBIB Events",
+    "url": "https://www.nibib.nih.gov/news-events/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIBIB"
+  },
+  {
+    "slug": "nih-nibib-funding-opps",
+    "name": "NIBIB Opportunities",
+    "url": "https://www.nibib.nih.gov/grants-contracts/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIBIB"
+  },
+  {
+    "slug": "nih-nicchd-sbir",
+    "name": "NICHD SBIR",
+    "url": "https://www.nichd.nih.gov/grants-contracts/sbir/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NICHD"
+  },
+  {
+    "slug": "nih-niaaa-sbir",
+    "name": "NIAAA SBIR",
+    "url": "https://www.niaaa.nih.gov/grants/rss-sbir",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIAAA"
+  },
+  {
+    "slug": "nih-nida-sbir",
+    "name": "NIDA SBIR",
+    "url": "https://nida.nih.gov/funding/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIDA"
+  },
+  {
+    "slug": "sloan",
+    "name": "Alfred P. Sloan Foundation",
+    "url": "https://sloan.org/feed/",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "Sloan Foundation"
+  },
+  {
+    "slug": "simons",
+    "name": "Simons Foundation",
+    "url": "https://www.simonsfoundation.org/feed/",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "Simons Foundation"
+  },
+  {
+    "slug": "rwjf",
+    "name": "Robert Wood Johnson Foundation",
+    "url": "https://www.rwjf.org/en/blog.rss",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "Robert Wood Johnson Foundation"
+  },
+  {
+    "slug": "spencer",
+    "name": "Spencer Foundation",
+    "url": "https://www.spencer.org/rss",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "Spencer Foundation"
+  },
+  {
+    "slug": "templeton",
+    "name": "Templeton Foundation",
+    "url": "https://www.templeton.org/feed/",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "Templeton Foundation"
+  },
+  {
+    "slug": "packard",
+    "name": "Packard Foundation",
+    "url": "https://www.packard.org/feed/",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "Packard Foundation"
+  },
+  {
+    "slug": "wlu",
+    "name": "W. M. Keck Foundation",
+    "url": "https://www.wmkeck.org/feed/",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "W. M. Keck Foundation"
+  },
+  {
+    "slug": "kauffman",
+    "name": "Kauffman Foundation",
+    "url": "https://www.kauffman.org/rss",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "Kauffman Foundation"
+  },
+  {
+    "slug": "rockefeller",
+    "name": "Rockefeller Foundation",
+    "url": "https://www.rockefellerfoundation.org/feed/",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "Rockefeller Foundation"
+  },
+  {
+    "slug": "hewlett",
+    "name": "Hewlett Foundation",
+    "url": "https://hewlett.org/feed/",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "Hewlett Foundation"
+  },
+  {
+    "slug": "carnegie",
+    "name": "Carnegie Corporation",
+    "url": "https://www.carnegie.org/feed/",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "Carnegie Corporation"
+  },
+  {
+    "slug": "macarthur",
+    "name": "MacArthur Foundation",
+    "url": "https://www.macfound.org/rss",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "MacArthur Foundation"
+  },
+  {
+    "slug": "bmgf-grand-challenges",
+    "name": "Grand Challenges",
+    "url": "https://gcgh.grandchallenges.org/rss",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "Grand Challenges"
+  },
+  {
+    "slug": "lasker",
+    "name": "Lasker Foundation",
+    "url": "https://www.laskerfoundation.org/feed/",
+    "type": "rss",
+    "category": "foundation",
+    "funder": "Lasker Foundation"
+  },
+  {
+    "slug": "fda",
+    "name": "FDA",
+    "url": "https://www.fda.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "FDA"
+  },
+  {
+    "slug": "nih-od-foa-notices",
+    "name": "NIH Notices",
+    "url": "https://grants.nih.gov/grants/guide/rss/notice-files.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIH"
+  },
+  {
+    "slug": "samhsa",
+    "name": "SAMHSA",
+    "url": "https://www.samhsa.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "SAMHSA"
+  },
+  {
+    "slug": "hrsa",
+    "name": "HRSA",
+    "url": "https://www.hrsa.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "HRSA"
+  },
+  {
+    "slug": "nih-nigms-news",
+    "name": "NIGMS News",
+    "url": "https://www.nigms.nih.gov/News/Pages/default.aspx?rss=1",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIGMS"
+  },
+  {
+    "slug": "nih-nci-news",
+    "name": "NCI News",
+    "url": "https://www.cancer.gov/rss/news",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NCI"
+  },
+  {
+    "slug": "nih-nhlbi-news",
+    "name": "NHLBI News",
+    "url": "https://www.nhlbi.nih.gov/news/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NHLBI"
+  },
+  {
+    "slug": "nih-nida-news",
+    "name": "NIDA News",
+    "url": "https://nida.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIDA"
+  },
+  {
+    "slug": "nih-nimh-news",
+    "name": "NIMH News",
+    "url": "https://www.nimh.nih.gov/news/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIMH"
+  },
+  {
+    "slug": "nih-nicd-news",
+    "name": "NICHD News",
+    "url": "https://www.nichd.nih.gov/news/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NICHD"
+  },
+  {
+    "slug": "nih-niehs-news",
+    "name": "NIEHS News",
+    "url": "https://www.niehs.nih.gov/news/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIEHS"
+  },
+  {
+    "slug": "nih-nidcr-news",
+    "name": "NIDCR News",
+    "url": "https://www.nidcr.nih.gov/news/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIDCR"
+  },
+  {
+    "slug": "nih-nibib-news",
+    "name": "NIBIB News",
+    "url": "https://www.nibib.nih.gov/news-events/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIBIB"
+  },
+  {
+    "slug": "nih-nidcd-news",
+    "name": "NIDCD News",
+    "url": "https://www.nidcd.nih.gov/news/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIDCD"
+  },
+  {
+    "slug": "nih-niaaa-news",
+    "name": "NIAAA News",
+    "url": "https://www.niaaa.nih.gov/news/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIAAA"
+  },
+  {
+    "slug": "nih-nia-news",
+    "name": "NIA News",
+    "url": "https://www.nia.nih.gov/news/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIA"
+  },
+  {
+    "slug": "nih-ninr-news",
+    "name": "NINR News",
+    "url": "https://www.ninr.nih.gov/news/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NINR"
+  },
+  {
+    "slug": "nih-nccih-news",
+    "name": "NCCIH News",
+    "url": "https://www.nccih.nih.gov/news/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NCCIH"
+  },
+  {
+    "slug": "nih-ncats-news",
+    "name": "NCATS News",
+    "url": "https://ncats.nih.gov/news/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NCATS"
+  },
+  {
+    "slug": "nih-fic-news",
+    "name": "FIC News",
+    "url": "https://www.fic.nih.gov/News/Pages/rss.aspx",
+    "type": "rss",
+    "category": "federal",
+    "funder": "FIC"
+  },
+  {
+    "slug": "who",
+    "name": "World Health Organization",
+    "url": "https://www.who.int/rss",
+    "type": "rss",
+    "category": "international",
+    "funder": "WHO"
+  },
+  {
+    "slug": "unesco",
+    "name": "UNESCO",
+    "url": "https://en.unesco.org/rss",
+    "type": "rss",
+    "category": "international",
+    "funder": "UNESCO"
+  },
+  {
+    "slug": "nsf-international",
+    "name": "NSF International",
+    "url": "https://www.nsf.gov/rss/rss_int.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NSF"
+  },
+  {
+    "slug": "nih-funding",
+    "name": "NIH Funding",
+    "url": "https://grants.nih.gov/grants/guide/rss/nih-guide-funding.xml",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIH"
+  },
+  {
+    "slug": "nih-sbir",
+    "name": "NIH SBIR/STTR",
+    "url": "https://seed.nih.gov/seed/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIH"
+  },
+  {
+    "slug": "uspto",
+    "name": "USPTO",
+    "url": "https://www.uspto.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "USPTO"
+  },
+  {
+    "slug": "ons",
+    "name": "Office of Naval Research",
+    "url": "https://www.onr.navy.mil/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "ONR"
+  },
+  {
+    "slug": "afosr",
+    "name": "Air Force Office of Scientific Research",
+    "url": "https://www.afosr.af.mil/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "AFOSR"
+  },
+  {
+    "slug": "army-aro",
+    "name": "Army Research Office",
+    "url": "https://www.arl.army.mil/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "ARO"
+  },
+  {
+    "slug": "nih-niaa-foa",
+    "name": "NIA FOA",
+    "url": "https://www.nia.nih.gov/grants-funding/rss/foa",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIA"
+  },
+  {
+    "slug": "nih-nidcr-foa",
+    "name": "NIDCR FOA",
+    "url": "https://www.nidcr.nih.gov/funding/rss/foa",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIDCR"
+  },
+  {
+    "slug": "nih-nimh-foa",
+    "name": "NIMH FOA",
+    "url": "https://www.nimh.nih.gov/funding/rss/foa",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIMH"
+  },
+  {
+    "slug": "nih-nida-foa",
+    "name": "NIDA FOA",
+    "url": "https://nida.nih.gov/funding/rss/foa",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIDA"
+  },
+  {
+    "slug": "nih-nibib-foa",
+    "name": "NIBIB FOA",
+    "url": "https://www.nibib.nih.gov/grants-contracts/rss/foa",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIBIB"
+  },
+  {
+    "slug": "nih-nhlbi-foa",
+    "name": "NHLBI FOA",
+    "url": "https://www.nhlbi.nih.gov/grants-and-training/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NHLBI"
+  },
+  {
+    "slug": "nih-niehs-foa",
+    "name": "NIEHS FOA",
+    "url": "https://www.niehs.nih.gov/research/supported/grants/rss/foa",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIEHS"
+  },
+  {
+    "slug": "nih-nigms-foa",
+    "name": "NIGMS FOA",
+    "url": "https://www.nigms.nih.gov/funding/rss/foa",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIGMS"
+  },
+  {
+    "slug": "nih-ninr-foa",
+    "name": "NINR FOA",
+    "url": "https://www.ninr.nih.gov/funding/rss/foa",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NINR"
+  },
+  {
+    "slug": "nih-nccih-foa",
+    "name": "NCCIH FOA",
+    "url": "https://www.nccih.nih.gov/funding/rss/foa",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NCCIH"
+  },
+  {
+    "slug": "nih-ncats-foa",
+    "name": "NCATS FOA",
+    "url": "https://ncats.nih.gov/funding/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NCATS"
+  },
+  {
+    "slug": "nih-fic-foa",
+    "name": "FIC FOA",
+    "url": "https://www.fic.nih.gov/Funding/Pages/rss.aspx",
+    "type": "rss",
+    "category": "federal",
+    "funder": "FIC"
+  },
+  {
+    "slug": "nih-od-funding",
+    "name": "NIH Office of the Director Funding",
+    "url": "https://www.nih.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIH"
+  },
+  {
+    "slug": "nih-niaaa-foa2",
+    "name": "NIAAA FOA",
+    "url": "https://www.niaaa.nih.gov/funding/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIAAA"
+  },
+  {
+    "slug": "nih-nidcd-foa",
+    "name": "NIDCD FOA",
+    "url": "https://www.nidcd.nih.gov/funding/rss/foa",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIDCD"
+  },
+  {
+    "slug": "nih-nidcr-funding-opps",
+    "name": "NIDCR Funding Opportunities",
+    "url": "https://www.nidcr.nih.gov/grants-funding/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIDCR"
+  },
+  {
+    "slug": "nih-nia-funding-opps",
+    "name": "NIA Funding Opportunities",
+    "url": "https://www.nia.nih.gov/grants-funding/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIA"
+  },
+  {
+    "slug": "nih-niehs-funding-opps",
+    "name": "NIEHS Funding Opportunities",
+    "url": "https://www.niehs.nih.gov/research/supported/grants/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIEHS"
+  },
+  {
+    "slug": "nih-nigms-funding-opps",
+    "name": "NIGMS Funding Opportunities",
+    "url": "https://www.nigms.nih.gov/funding/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIGMS"
+  },
+  {
+    "slug": "nih-ninr-funding-opps",
+    "name": "NINR Funding Opportunities",
+    "url": "https://www.ninr.nih.gov/funding/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NINR"
+  },
+  {
+    "slug": "nih-nccih-funding-opps",
+    "name": "NCCIH Funding Opportunities",
+    "url": "https://www.nccih.nih.gov/funding/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NCCIH"
+  },
+  {
+    "slug": "nih-ncats-funding-opps",
+    "name": "NCATS Funding Opportunities",
+    "url": "https://ncats.nih.gov/funding/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NCATS"
+  },
+  {
+    "slug": "nih-nida-funding-opps",
+    "name": "NIDA Funding Opportunities",
+    "url": "https://nida.nih.gov/funding/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIDA"
+  },
+  {
+    "slug": "nih-ninds-funding-opps",
+    "name": "NINDS Funding Opportunities",
+    "url": "https://www.ninds.nih.gov/Funding/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NINDS"
+  },
+  {
+    "slug": "nih-nhlbi-funding-opps",
+    "name": "NHLBI Funding Opportunities",
+    "url": "https://www.nhlbi.nih.gov/grants-and-training/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NHLBI"
+  },
+  {
+    "slug": "nih-nci-funding-opps",
+    "name": "NCI Funding Opportunities",
+    "url": "https://www.cancer.gov/rss/funding",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NCI"
+  },
+  {
+    "slug": "nih-nci-grants",
+    "name": "NCI Grants",
+    "url": "https://funding.cancer.gov/rss",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NCI"
+  },
+  {
+    "slug": "nih-niaa-foa-notices",
+    "name": "NIA FOA Notices",
+    "url": "https://www.nia.nih.gov/grants-funding/rss/announcements",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIA"
+  },
+  {
+    "slug": "nih-nigms-foa-notices",
+    "name": "NIGMS FOA Notices",
+    "url": "https://www.nigms.nih.gov/funding/rss/announcements",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIGMS"
+  },
+  {
+    "slug": "nih-nida-foa-notices",
+    "name": "NIDA FOA Notices",
+    "url": "https://nida.nih.gov/funding/rss/announcements",
+    "type": "rss",
+    "category": "federal",
+    "funder": "NIDA"
+  }
+]

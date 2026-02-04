@@ -3,8 +3,9 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Collaboration from '@tiptap/extension-collaboration';
+import CollaborationCursor from '@tiptap/extension-collaboration-cursor';
 import * as Y from 'yjs';
-import { useEffect, useState, useImperativeHandle, forwardRef, useCallback } from 'react';
+import { useEffect, useState, useImperativeHandle, forwardRef, useCallback, useMemo } from 'react';
 import { createClient } from '@insforge/sdk';
 import { InsForgeProvider } from '@/lib/yjs-insforge-provider';
 import SlashCommandMenu from './SlashCommandMenu';
@@ -27,25 +28,37 @@ interface CollaborativeEditorProps {
         funder?: string;
         description?: string;
     };
+    initialContent?: object | null;
 }
 
 const CollaborativeEditor = forwardRef<EditorRef, CollaborativeEditorProps>(
-    ({ projectId, docId, grantInfo }, ref) => {
+    ({ projectId, docId, grantInfo, initialContent }, ref) => {
         const [ydoc] = useState(() => new Y.Doc());
         const [provider, setProvider] = useState<InsForgeProvider | null>(null);
+        const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected'>('connecting');
         const [showSlashMenu, setShowSlashMenu] = useState(false);
         const [slashMenuPosition, setSlashMenuPosition] = useState({ top: 0, left: 0 });
         const [isGenerating, setIsGenerating] = useState(false);
 
+        const user = useMemo(() => {
+            const colors = ['#0f766e', '#1d4ed8', '#b91c1c', '#6d28d9', '#ca8a04'];
+            const name = `Researcher ${Math.floor(Math.random() * 900 + 100)}`;
+            return { name, color: colors[Math.floor(Math.random() * colors.length)] };
+        }, []);
+
         useEffect(() => {
-            const channelName = `project:${projectId}`;
+            const channelName = `project:${projectId}:doc:${docId}`;
             const newProvider = new InsForgeProvider(insforge, channelName, ydoc);
+            newProvider.awareness.setLocalStateField('user', user);
+            newProvider.on('status', (status: string) => {
+                setConnectionStatus(status as 'connecting' | 'connected' | 'disconnected');
+            });
             setProvider(newProvider);
 
             return () => {
                 newProvider.disconnect();
             };
-        }, [projectId, ydoc]);
+        }, [projectId, docId, ydoc, user]);
 
         const editor = useEditor({
             extensions: [
@@ -56,14 +69,22 @@ const CollaborativeEditor = forwardRef<EditorRef, CollaborativeEditorProps>(
                 Collaboration.configure({
                     document: ydoc,
                 }),
+                ...(provider
+                    ? [
+                          CollaborationCursor.configure({
+                              provider,
+                              user,
+                          }),
+                      ]
+                    : []),
             ],
+            content: initialContent || null,
             editorProps: {
                 attributes: {
-                    class: 'prose prose-invert max-w-none focus:outline-none min-h-[500px] p-4 bg-gray-900 rounded-lg border border-gray-800',
+                    class: 'prose max-w-none focus:outline-none min-h-[500px] p-4 bg-surface rounded-xl border border-border',
                 },
                 handleKeyDown: (view, event) => {
                     if (event.key === '/' && !showSlashMenu) {
-                        // Get cursor position for menu placement
                         const { from } = view.state.selection;
                         const coords = view.coordsAtPos(from);
                         setSlashMenuPosition({
@@ -71,7 +92,7 @@ const CollaborativeEditor = forwardRef<EditorRef, CollaborativeEditorProps>(
                             left: coords.left,
                         });
                         setShowSlashMenu(true);
-                        return false; // Let the "/" be typed
+                        return false;
                     }
                     if (showSlashMenu && event.key === 'Escape') {
                         setShowSlashMenu(false);
@@ -81,10 +102,8 @@ const CollaborativeEditor = forwardRef<EditorRef, CollaborativeEditorProps>(
                 },
             },
             onUpdate: ({ editor }) => {
-                // Close slash menu if user types something other than a command
                 const text = editor.getText();
                 if (showSlashMenu && !text.endsWith('/')) {
-                    // Give a small delay to allow command selection
                     setTimeout(() => {
                         const currentText = editor.getText();
                         if (!currentText.includes('/')) {
@@ -93,7 +112,8 @@ const CollaborativeEditor = forwardRef<EditorRef, CollaborativeEditorProps>(
                     }, 100);
                 }
             },
-        });
+
+        }, [provider, user]);
 
         const handleSlashCommand = useCallback(async (action: string) => {
             if (!editor || isGenerating) return;
@@ -138,6 +158,7 @@ const CollaborativeEditor = forwardRef<EditorRef, CollaborativeEditorProps>(
                 // Insert loading indicator
                 editor.commands.insertContent('<span class="text-gray-500">⏳ Generating...</span>');
                 const loadingPos = editor.state.selection.from;
+                const placeholderSize = '⏳ Generating...'.length;
 
                 const res = await fetch('/api/ai/copilot', {
                     method: 'POST',
@@ -153,7 +174,7 @@ const CollaborativeEditor = forwardRef<EditorRef, CollaborativeEditorProps>(
                 const data = await res.json();
 
                 // Remove loading indicator
-                editor.commands.setTextSelection({ from: loadingPos - 25, to: loadingPos });
+                editor.commands.setTextSelection({ from: Math.max(0, loadingPos - placeholderSize), to: loadingPos });
                 editor.commands.deleteSelection();
 
                 if (data.success && data.text) {
@@ -175,6 +196,31 @@ const CollaborativeEditor = forwardRef<EditorRef, CollaborativeEditorProps>(
             getJSON: () => editor?.getJSON() || {},
         }), [editor]);
 
+
+        useEffect(() => {
+            if (!editor) return;
+            if (!initialContent) return;
+            editor.commands.setContent(initialContent, { emitUpdate: false });
+        }, [editor, initialContent]);
+
+        useEffect(() => {
+            if (!editor) return;
+            if (!docId) return;
+            const handle = window.setTimeout(() => {
+                const payload = {
+                    docId,
+                    content: editor.getJSON(),
+                };
+                fetch(`/api/projects/${projectId}/docs/persist`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                }).catch(() => undefined);
+            }, 1200);
+
+            return () => window.clearTimeout(handle);
+        }, [editor, projectId, docId, editor?.state?.doc]);
+
         if (!editor) {
             return null;
         }
@@ -182,7 +228,7 @@ const CollaborativeEditor = forwardRef<EditorRef, CollaborativeEditorProps>(
         return (
             <div className="w-full relative">
                 <div className="border-b border-gray-800 p-2 text-sm text-gray-500 flex justify-between items-center">
-                    <span>Status: {provider ? 'Connected' : 'Connecting...'}</span>
+                    <span>Status: {connectionStatus}</span>
                     <div className="flex items-center gap-4">
                         {isGenerating && (
                             <span className="text-indigo-400 animate-pulse">AI generating...</span>

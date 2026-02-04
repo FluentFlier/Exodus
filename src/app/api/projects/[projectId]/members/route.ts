@@ -4,7 +4,7 @@ import { auth } from '@insforge/nextjs/server';
 
 // GET - List all team members for a project
 export async function GET(
-    request: Request,
+    _request: Request,
     { params }: { params: Promise<{ projectId: string }> }
 ) {
     try {
@@ -21,7 +21,7 @@ export async function GET(
         });
 
         // Fetch members with profile data
-        const { data: members, error } = await insforge
+        const { data: members, error } = await insforge.database
             .from('project_members')
             .select('*, profiles(*)')
             .eq('project_id', projectId);
@@ -67,7 +67,7 @@ export async function POST(
         });
 
         // Lookup user by email in profiles table
-        const { data: profile, error: lookupError } = await insforge
+        const { data: profile, error: lookupError } = await insforge.database
             .from('profiles')
             .select('id, full_name, email, institution')
             .eq('email', email.toLowerCase().trim())
@@ -81,7 +81,7 @@ export async function POST(
         }
 
         // Check if already a member
-        const { data: existing } = await insforge
+        const { data: existing } = await insforge.database
             .from('project_members')
             .select('user_id')
             .eq('project_id', projectId)
@@ -96,7 +96,7 @@ export async function POST(
         }
 
         // Add to project_members
-        const { error: insertError } = await insforge
+        const { error: insertError } = await insforge.database
             .from('project_members')
             .insert({
                 project_id: projectId,
@@ -147,7 +147,7 @@ export async function DELETE(
             edgeFunctionToken: token,
         });
 
-        const { error } = await insforge
+        const { error } = await insforge.database
             .from('project_members')
             .delete()
             .eq('project_id', projectId)

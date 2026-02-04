@@ -4,7 +4,7 @@ import { auth } from '@insforge/nextjs/server';
 
 // GET - Fetch a single project with grant info
 export async function GET(
-    request: Request,
+    _request: Request,
     { params }: { params: Promise<{ projectId: string }> }
 ) {
     try {
@@ -20,7 +20,7 @@ export async function GET(
             edgeFunctionToken: token,
         });
 
-        const { data: project, error } = await insforge
+        const { data: project, error } = await insforge.database
             .from('projects')
             .select('*, grants(*)')
             .eq('id', projectId)

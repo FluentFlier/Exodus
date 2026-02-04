@@ -1,0 +1,69 @@
+Resume Checklist
+
+1) InsForge MCP docs
+- Call fetch-docs for: instructions, db-sdk-typescript, auth-sdk-typescript, storage-sdk, ai-integration-sdk, realtime, functions-sdk, deployment. (DONE)
+
+2) Environment variables
+- Add to .env: (DONE)
+  - RESEND_API_KEY
+  - NEXT_PUBLIC_INSFORGE_BASE_URL
+  - NEXT_PUBLIC_INSFORGE_ANON_KEY
+  - INGEST_API_KEY (for scout refresh endpoint)
+  - InsForge model gateway vars (LLM + embeddings)
+  - APP_BASE_URL (for scheduled scout)
+
+3) Grant sources (100+)
+- Create a diversified sources list (RSS + APIs + foundations + agencies). (DONE)
+- Store list in grant_sources table and as a JSON file in repo for seed usage. (DONE - JSON, auto-upsert on ingest)
+- Use the sources list in ingest pipeline. (DONE)
+
+4) Scheduled ingestion + manual refresh
+- Add 30-min schedule for ingestion (cron/queue per InsForge docs). (PENDING: set cron in InsForge UI)
+- Add manual refresh button on grants page to trigger POST /api/ai/scout. (DONE)
+
+5) Grant Scout pipeline
+- Expand ingestion to all sources in list. (DONE)
+- Normalize fields; dedupe by source_identifier + source_name. (DONE)
+- Generate embeddings via InsForge model gateway. (DONE)
+- Record ingestion_runs with summary + timestamps. (DONE)
+
+6) Team invites + email
+- Finish invite flow with tokenized acceptance. (DONE)
+- Send invite emails via Resend. (DONE)
+- Persist invite status in project_members + notifications. (DONE)
+
+6a) Notifications UI
+- Add notifications inbox page. (DONE)
+
+7) Realtime collaboration
+- Use InsForge realtime for Yjs updates. (DONE)
+- Add presence + cursor awareness. (DONE)
+- Add reconnect + backfill logic. (DONE)
+
+8) AI agents production
+- Scout/compliance/review should use InsForge model gateway. (DONE)
+- Ensure JSON output parsing + guardrails. (DONE)
+
+9) Matching + schema
+- Add match_grants RPC to schema. (DONE)
+- Add indexes on embeddings + common filters. (DONE)
+
+10) Comments + suggestions
+- Connect UI to backend routes for full CRUD. (DONE)
+- Add mentions/resolve flow if needed. (PARTIAL: resolve implemented, mentions pending)
+
+11) Collaborator directory
+- Add richer filters, profiles, and detail cards. (DONE)
+- Seed public collaborators from OpenAlex (ASU + top universities). (DONE)
+
+12) Reliability + polish
+-- Add error boundaries + loading states. (DONE)
+-- Add analytics, logging, rate limits. (PARTIAL: rate limits added)
+-- Add tests for core flows. (PENDING)
+
+14) Profile intelligence
+- Add detailed profile form with links and context. (DONE)
+- AI profile analysis from provided links + OpenAlex. (DONE)
+
+13) Infrastructure setup
+- Use MCP tools to deploy schema, RLS policies, storage bucket. (DONE)

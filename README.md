@@ -1,64 +1,73 @@
-# **PROJECT_NAME**
+# Exodus
 
-A modern Next.js application with TypeScript and Tailwind CSS.
+Exodus is an AI grant intelligence, collaboration workspace, and submission readiness platform. It combines grant discovery, AI matching, and real-time proposal collaboration into a single workflow.
 
-## Features
+## What’s included
 
-- ⚡ **Next.js 15** - React framework for production
-- 🎨 **Tailwind CSS** - Utility-first CSS framework
-- 🔥 **TypeScript** - Type-safe development
-- 📦 **App Router** - Latest Next.js routing system
-- 🌙 **Dark Mode** - Built-in dark mode support
+- Grant discovery with live ingestion and explainable matching
+- Project workspaces with collaborative docs, tasks, artifacts, and AI agents
+- Team invites with tokenized acceptance and email notifications
+- Submission package export (ZIP)
+- Collaborator directory with filtering
 
-## Getting Started
-
-### Install Dependencies
+## Quick start
 
 ```bash
 npm install
-```
-
-### Start Development Server
-
-```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open `http://localhost:3000`.
 
-## Available Scripts
+## Environment variables
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
-
-## Project Structure
-
-```
-src/
-├── app/
-│   ├── layout.tsx     # Root layout
-│   ├── page.tsx       # Home page
-│   └── globals.css    # Global styles with Tailwind
-```
-
-## Environment Variables
-
-Create a `.env.local` file in the root directory for environment variables:
+Create a `.env` file from `env.example` and fill values:
 
 ```env
-NEXT_PUBLIC_API_URL=your_api_url_here
+NEXT_PUBLIC_INSFORGE_BASE_URL=...
+NEXT_PUBLIC_INSFORGE_ANON_KEY=...
+RESEND_API_KEY=...
+INGEST_API_KEY=...
+INSFORGE_LLM_MODEL=openai/gpt-4o-mini
+INSFORGE_EMBEDDING_MODEL=openai/text-embedding-3-small
+APP_BASE_URL=http://localhost:3000
 ```
 
-## Learn More
+## InsForge setup (MCP)
 
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Tailwind CSS Documentation](https://tailwindcss.com)
-- [TypeScript Documentation](https://www.typescriptlang.org)
+Use MCP tools for infrastructure:
 
-## Deploy on Vercel
+1) Deploy schema
+- Apply `src/lib/schema.sql` using `run-raw-sql`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new).
+2) Create storage bucket
+- Create a private `artifacts` bucket using `create-bucket`.
 
-Check out the [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3) Create scheduled ingestion function
+- Function file: `insforge/functions/scout-grants.js`
+- Create function with `create-function` (slug `scout-grants`).
+- Schedule it every 30 minutes in the InsForge dashboard.
+  - Suggested cron: `*/30 * * * *`
+
+## Grant ingestion
+
+- Manual refresh: click “Run Grant Scout” on the Grants page.
+- API: `POST /api/ai/scout` with `x-api-key: INGEST_API_KEY` for scheduled/automation calls.
+- Sources list: `src/data/grant_sources.json` (100+ sources).
+
+## Collaborator directory seeding
+
+- Seed from OpenAlex via `POST /api/collaborators/seed` (login or `x-api-key`).
+- Includes Arizona State University + additional top research universities.
+
+## Common commands
+
+- `npm run dev` — start dev server
+- `npm run build` — production build
+- `npm run lint` — linting
+
+## Notes
+
+- AI models are resolved through InsForge model gateway.
+- RLS is not enabled by default; add policies as needed before production.
+- For private storage buckets, artifact URLs are signed on request.

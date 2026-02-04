@@ -1,60 +1,10 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@insforge/sdk';
-import { Database } from '@/lib/database.types';
+import { INSFORGE_EMBEDDING_MODEL } from '@/lib/ai-config';
+import { CURATED_GRANTS } from '@/data/mock-grant-data';
 
 // Sample Grants Data
-const SAMPLE_GRANTS = [
-    {
-        title: 'NIH R01: Research Project Grant',
-        description: 'Supports discrete, specified, circumscribed projects to be performed by an investigator(s) in an area representing the investigator\'s specific interest and competencies.',
-        funder: 'NIH',
-        amount_min: 250000,
-        amount_max: 500000,
-        deadline: '2026-10-05T17:00:00Z',
-        eligibility_text: 'Independent investigators at any career stage. Institutions of Higher Education.',
-        tags: ['Health', 'Biomedical', 'Research'],
-    },
-    {
-        title: 'NSF CAREER: Faculty Early Career Development Program',
-        description: 'Foundation-wide activity that offers the National Science Foundation\'s most prestigious awards in support of early-career faculty.',
-        funder: 'NSF',
-        amount_min: 400000,
-        amount_max: 600000,
-        deadline: '2026-07-26T17:00:00Z',
-        eligibility_text: 'Assistant Professors (tenure-track) who have not yet received a CAREER award.',
-        tags: ['STEM', 'Early Career', 'Education'],
-    },
-    {
-        title: 'DOE Office of Science: Advanced Scientific Computing Research',
-        description: 'Research in applied mathematics, computer science, and high-performance computing to advance scientific discovery.',
-        funder: 'DOE',
-        amount_min: 150000,
-        amount_max: 1000000,
-        deadline: '2026-05-15T17:00:00Z',
-        eligibility_text: 'Universities, National Labs, Industry.',
-        tags: ['Computing', 'Energy', 'Math'],
-    },
-    {
-        title: 'Simons Foundation: Targeted Grants in MPS',
-        description: 'Grants in Mathematics and Physical Sciences for high-risk projects of exceptional promise.',
-        funder: 'Simons Foundation',
-        amount_min: 100000,
-        amount_max: 800000,
-        deadline: '2026-06-30T17:00:00Z',
-        eligibility_text: 'Established researchers in mathematics and physical sciences.',
-        tags: ['Mathematics', 'Physics', 'High Risk'],
-    },
-    {
-        title: 'Gates Foundation: Grand Challenges Explorations',
-        description: 'Foster innovation in global health and development research.',
-        funder: 'Bill & Melinda Gates Foundation',
-        amount_min: 100000,
-        amount_max: 100000,
-        deadline: '2026-11-01T17:00:00Z',
-        eligibility_text: 'Anyone can apply. No preliminary data required.',
-        tags: ['Global Health', 'Development', 'Innovation'],
-    },
-];
+const SAMPLE_GRANTS = CURATED_GRANTS;
 
 export async function GET() {
     try {
@@ -63,7 +13,21 @@ export async function GET() {
             anonKey: process.env.NEXT_PUBLIC_INSFORGE_ANON_KEY!,
         });
 
+        console.log('InsForge Client Keys:', Object.keys(insforge));
+        if (typeof (insforge as any).from !== 'function') {
+            console.error('insforge.from is missing!');
+        }
+
         const results = [];
+
+        const { error: clearError } = await insforge.database
+            .from('grants')
+            .delete()
+            .neq('id', '00000000-0000-0000-0000-000000000000');
+
+        if (clearError) {
+            throw clearError;
+        }
 
         for (const grant of SAMPLE_GRANTS) {
             // Generate Embedding
@@ -72,7 +36,7 @@ export async function GET() {
             console.log(`Embedding: ${grant.title}`);
 
             const embeddingResponse = await insforge.ai.embeddings.create({
-                model: 'text-embedding-3-small',
+                model: INSFORGE_EMBEDDING_MODEL,
                 input: textToEmbed,
             });
 
@@ -84,7 +48,7 @@ export async function GET() {
             const embedding = embeddingResponse.data[0].embedding;
 
             // Insert Grant
-            const { data, error } = await insforge
+            const { data, error } = await insforge.database
                 .from('grants')
                 .upsert({
                     title: grant.title,
@@ -94,9 +58,15 @@ export async function GET() {
                     amount_max: grant.amount_max,
                     deadline: grant.deadline,
                     eligibility_text: grant.eligibility_text,
+                    eligibility_json: grant.eligibility_json,
                     tags: grant.tags,
+                    categories: grant.categories,
+                    source_url: grant.source_url,
+                    source_name: grant.source_name,
+                    source_identifier: grant.source_identifier,
                     embedding: embedding as any,
-                })
+                } as any)
+
                 .select()
                 .single();
 
