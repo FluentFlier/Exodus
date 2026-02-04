@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@insforge/nextjs';
+import { Logo } from '@/components/ui/Logo';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -99,8 +100,8 @@ export default function LoginPage() {
     return (
       <div className="min-h-screen bg-surface flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <div className="h-12 w-12 rounded-xl bg-teal flex items-center justify-center animate-pulse">
-            <span className="font-serif text-lg font-bold text-white">E</span>
+          <div className="animate-pulse">
+            <Logo size="lg" />
           </div>
           <p className="text-sm text-inkMuted">Loading...</p>
         </div>
@@ -114,9 +115,7 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="flex justify-center mb-8">
           <Link href="/" className="flex items-center gap-3">
-            <div className="h-12 w-12 rounded-xl bg-teal flex items-center justify-center">
-              <span className="font-serif text-xl font-bold text-white">E</span>
-            </div>
+            <Logo size="lg" />
             <div>
               <div className="font-serif text-2xl text-ink">Exodus</div>
               <div className="text-xs text-inkMuted">Grant Intelligence</div>
